@@ -9,28 +9,37 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ClassLibrary;
+
+
 
 namespace Cristal
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Window1 : Window
     {
-        public MainWindow()
+        public Window1()
         {
             InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+            MessageBox.Show("Hola");
 
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
+            Conditions conditions = new Conditions(0.005,0.005,0.005,20,5*10^-6,0.5,400);
+            Matriz matrix = new Matriz(11, 11, conditions);
+            matrix.createMatrix();
+            matrix.initialconditions();
+            matrix.initialSolid(5, 5);
+            Cell[,] prueba = matrix.neighbours();
+
+            MessageBox.Show("Hola");
+
+
 
         }
     }

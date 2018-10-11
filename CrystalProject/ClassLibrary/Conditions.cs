@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Library;
 
-namespace Library
+
+namespace ClassLibrary
 {
     public class Conditions
     {
         double delta_x;
         double delta_y;
         double epsylon;
-        double B;
+        //double B;
         double M;
         double delta_time;
         double delta;
         double alpha;
 
-        public Conditions(double delta_x, double delta_y, double epsylon, double B, double M, double delta_time, double delta, double alpha)
+        public Conditions(double delta_x, double delta_y, double epsylon, double M, double delta_time, double delta, double alpha)
         {
             this.delta_x = delta_x;
             this.delta_y = delta_y;
             this.epsylon = epsylon;
-            this.B = B;
+            //this.B = B;
             this.M = M;
             this.delta_time = delta_time;
             this.delta = delta;
@@ -47,10 +47,10 @@ namespace Library
         {
             return epsylon;
         }
-        public double getB()
-        {
-            return B;
-        }
+        //public double getB()
+        //{
+        //    return B;
+        //}
         public double getM()
         {
             return M;
