@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Library;
 
 namespace Library
 {
-    class Conditions
+    public class Conditions
     {
-        int delta_x;
-        int delta_y;
-        int epsylon;
-        int B;
-        int M;
-        int delta_time;
-        int delta;
+        double delta_x;
+        double delta_y;
+        double epsylon;
+        double B;
+        double M;
+        double delta_time;
+        double delta;
+        double alpha;
 
-        public Conditions(int delta_x, int delta_y, int epsylon, int B, int M, int delta_time, int delta)
+        public Conditions(double delta_x, double delta_y, double epsylon, double B, double M, double delta_time, double delta, double alpha)
         {
             this.delta_x = delta_x;
             this.delta_y = delta_y;
@@ -24,33 +26,40 @@ namespace Library
             this.M = M;
             this.delta_time = delta_time;
             this.delta = delta;
+            this.alpha = alpha;
+
         }
 
-        public int getdelta_x()
+
+        public double getalpha()
         {
-            return delta_x;
+            return this.alpha;
         }
-        public int getdelta_y()
+        public double getdelta_x()
+        {
+            return this.delta_x;
+        }
+        public double getdelta_y()
         {
             return delta_y;
         }
-        public int getepsylon()
+        public double getepsylon()
         {
             return epsylon;
         }
-        public int getB()
+        public double getB()
         {
             return B;
         }
-        public int getM()
+        public double getM()
         {
             return M;
         }
-        public int getdelta_time()
+        public double getdelta_time()
         {
             return delta_time;
         }
-        public int getdelta()
+        public double getdelta()
         {
             return delta;
         }
