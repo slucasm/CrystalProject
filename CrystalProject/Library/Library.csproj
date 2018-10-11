@@ -41,7 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cell.cs" />
+<<<<<<< HEAD
     <Compile Include="Conditions.cs" />
+=======
+    <Compile Include="Matrix.cs" />
+>>>>>>> 389c5a7373fd1f3164a8c0b06a1da1201fca65ed
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
