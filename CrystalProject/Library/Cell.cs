@@ -10,6 +10,7 @@ namespace Library
         int phase_actual;
         int temperature_actual;
 
+        public Cell(
 
         public Cell(int phase_actual,int temperature_actual)
         {
