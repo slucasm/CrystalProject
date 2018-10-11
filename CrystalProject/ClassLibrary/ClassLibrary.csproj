@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{64A2615A-8101-4DA9-A4CB-31EA45E19900}</ProjectGuid>
+    <ProjectGuid>{05811504-F0B4-45EB-BBE2-F2E9586EF1D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Library</RootNamespace>
-    <AssemblyName>Library</AssemblyName>
+    <RootNamespace>ClassLibrary</RootNamespace>
+    <AssemblyName>ClassLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,11 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cell.cs" />
-<<<<<<< HEAD
     <Compile Include="Conditions.cs" />
-=======
     <Compile Include="Matrix.cs" />
->>>>>>> 389c5a7373fd1f3164a8c0b06a1da1201fca65ed
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -161,4 +161,22 @@ public class Form1 : System.Windows.Forms.Form
         Application.EnableVisualStyles();
         Application.Run(new Form1());
     }
+
+    private void InitializeComponent()
+    {
+            this.SuspendLayout();
+            // 
+            // Form1
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Name = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load_1);
+            this.ResumeLayout(false);
+
+    }
+
+    private void Form1_Load_1(object sender, EventArgs e)
+    {
+
+    }
 }
