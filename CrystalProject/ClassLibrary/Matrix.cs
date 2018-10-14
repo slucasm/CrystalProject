@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 namespace ClassLibrary
 {
@@ -19,13 +20,29 @@ namespace ClassLibrary
             this.conditions = conditions;
         }
 
-        public Cell[,] createMatrix()
+        public DataTable createTable()
+        {
+            DataTable table = new DataTable();
+            for (int contadorcolumns = 0; contadorcolumns < numbercolumns; contadorcolumns++)
+            {
+                //DataColumn dc = new DataColumn("id", typeof(int));
+                table.Columns.Add();
+            }
+            for (int contadorrows = 0; contadorrows < numberrows; contadorrows++)
+            {
+                table.Rows.Add();
+            }
+            
+            return table;
+        }
+
+        public void createMatrix()
         {
             this.matrix = new Cell[numberrows, numbercolumns];
-            return matrix;
+            //return matrix;
         }
         //iniciamos la matriz con todas las celdas como líquido
-        public Cell[,] initialconditions()
+        public void initialconditions()
         {
             for (int i = 0; i < numberrows; i++)
             {
@@ -34,19 +51,19 @@ namespace ClassLibrary
                     matrix[i, j] = new Cell(1, -1, conditions);
                 }
             }
-            return matrix;
+            //return matrix;
         }
-        public Cell[,] initialSolid(int i, int j)
+        public void initialSolid(int i, int j)
         {
             matrix[i, j].setSolid();
-            return matrix;
+            //return matrix;
         }
 
 
 
         //Para la función que le dice los vecinos a las celdas solo calculamos las celdas que no están en la frontera!
         //Por eso empezamos con i = 1, j = 1, y hasta la longitud -1, de esta forma evitamos cammbiar los valores de la frontera.
-        public Cell[,] neighbours()//Cell[,] matrix)
+        public void neighbours()//Cell[,] matrix)
         {
             for (int i = 1; i < numberrows-1; i++)
             {
@@ -55,7 +72,7 @@ namespace ClassLibrary
                     matrix[i, j].compute_phase_and_temperature(matrix[i, j + 1].getPhase(), matrix[i, j - 1].getPhase(), matrix[i - 1, j].getPhase(), matrix[i + 1, j].getPhase(), matrix[i, j+1].getTemperature(), matrix[i, j-1].getTemperature(), matrix[i-1, j].getTemperature(), matrix[i+1, j].getTemperature());
                 }
             }
-            return matrix;
+            //return matrix;
         }
 
        
