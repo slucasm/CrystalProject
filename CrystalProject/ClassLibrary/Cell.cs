@@ -44,6 +44,7 @@ namespace ClassLibrary
             return this.phase_actual;
         }
 
+       
 
         public void setSolid()
         {
@@ -67,6 +68,15 @@ namespace ClassLibrary
 
             this.phase_future = phase_actual + phase_time * conditions.getdelta_time();
             this.temperature_future = temperature_actual + temperature_time * conditions.getdelta_time();
+        }
+
+        public void actualizar()
+        {
+            temperature_actual = temperature_future;
+            temperature_future = 0;
+            phase_actual = phase_future;
+            phase_future = 0;
+
         }
 
 

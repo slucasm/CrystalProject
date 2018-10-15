@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using System.Resources;
+
 
 namespace ClassLibrary
 {
@@ -42,13 +44,27 @@ namespace ClassLibrary
             //return matrix;
         }
         //iniciamos la matriz con todas las celdas como líquido
-        public void initialconditions()
+        public void initialconditions(int boundary)
         {
             for (int i = 0; i < numberrows; i++)
             {
                 for (int j = 0; j < numbercolumns; j++)
                 {
-                    matrix[i, j] = new Cell(1, -1, conditions);
+                    if ((i == 0) || (j == 0) || (i == numberrows) || (j == numbercolumns))
+                    {
+                        if (boundary == 1)
+                        {
+                            matrix[i, j] = new Cell(1, -1, conditions);
+                        }
+                        else
+                        {
+                            matrix[i, j] = new Cell(1, -1, conditions);
+                        }
+                    }
+                    else
+                    {
+                        matrix[i, j] = new Cell(1, -1, conditions);
+                    }
                 }
             }
             //return matrix;
@@ -58,6 +74,8 @@ namespace ClassLibrary
             matrix[i, j].setSolid();
             //return matrix;
         }
+
+
 
 
 
@@ -74,6 +92,26 @@ namespace ClassLibrary
             }
             //return matrix;
         }
+
+        public void actualizar()
+        {
+            for (int i = 1; i < numberrows - 1; i++)
+            {
+                for (int j = 1; j < numbercolumns - 1; j++)
+                {
+                    matrix[i, j].actualizar();
+                }
+            }
+        }
+
+        public Tuple<double, double> getphaseandtemperature(int fila, int columna)
+        {
+            double phase = matrix[fila, columna].getPhase();
+            double temp = matrix[fila, columna].getTemperature();
+            Tuple<double, double> tuple = new Tuple<double, double>(phase,temp);
+            return tuple;
+        }
+
 
        
 
