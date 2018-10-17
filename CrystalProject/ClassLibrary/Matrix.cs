@@ -50,19 +50,20 @@ namespace ClassLibrary
             {
                 for (int j = 0; j < numbercolumns; j++)
                 {
-                    if ((i == 0) || (j == 0) || (i == numberrows) || (j == numbercolumns))
+                    if ((i == 0) || (j == 0) || (i == numberrows-1) || (j == numbercolumns-1)) //Only at boundaries
                     {
-                        if (boundary == 1)
+                        if (boundary == 1) //Boundary Tconstant T=0 (liquid)
                         {
-                            matrix[i, j] = new Cell(1, -1, conditions);
+                            matrix[i, j] = new Cell(1, 0, conditions); //Temperatura 0, liquid
                         }
-                        else
+                        else //Boundary=0 Boundary reflecting T=-1 (solid)
                         {
-                            matrix[i, j] = new Cell(1, -1, conditions);
+                            matrix[i, j] = new Cell(1, -1, conditions); //Temperatura -1, solid
                         }
                     }
                     else
                     {
+                        //Error!: Select conditions please
                         matrix[i, j] = new Cell(1, -1, conditions);
                     }
                 }

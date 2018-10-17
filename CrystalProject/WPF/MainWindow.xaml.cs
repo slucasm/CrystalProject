@@ -83,6 +83,8 @@ namespace WPF
 
         private void button_creategrid_Click(object sender, RoutedEventArgs e)
         {
+            grid_phase.ColumnDefinitions.Clear();
+            grid_phase.RowDefinitions.Clear();
             rows = Convert.ToInt32(textBox_rows.Text);
             columns = Convert.ToInt32(textBox_columns.Text);
             grid_phase.ShowGridLines = true;
@@ -97,8 +99,18 @@ namespace WPF
             
             matrix = new Matriz(rows, columns, conditionslist[comboBox_conditions.SelectedIndex]);
             matrix.createMatrix();
-            if (comboBox_boundary.SelectedIndex == 0){ matrix.initialconditions(1); }
-            else { matrix.initialconditions(0); }
+
+            matrix.initialconditions(0); //Por defecto
+
+            //if (comboBox_boundary.SelectedIndex == 0)
+            //{ 
+            //    matrix.initialconditions(1); 
+            //}
+            //else 
+            //{ 
+            //    matrix.initialconditions(0); 
+            //}
+            
             tabla = matrix.createTable();
             
             //dataGrid_cells.ItemsSource = tabla.DefaultView;
@@ -184,9 +196,14 @@ namespace WPF
         {
             if (comboBox_boundary.SelectedIndex != -1)
             {
-
-                if (comboBox_boundary.SelectedIndex == 0) { matrix.initialconditions(1); }
-                else { matrix.initialconditions(0); }
+                if (comboBox_boundary.SelectedIndex == 0) 
+                { 
+                    matrix.initialconditions(1); 
+                }
+                else 
+                { 
+                    matrix.initialconditions(0); 
+                }
                 matrix.initialSolid(Convert.ToInt32(Math.Ceiling(Convert.ToDouble(rows / 2))), Convert.ToInt32(Math.Ceiling(Convert.ToDouble(columns / 2))));
             }
         }       
