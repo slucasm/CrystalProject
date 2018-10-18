@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 
 
+
+
 namespace ClassLibrary
 {
     public class Cell
@@ -78,9 +80,19 @@ namespace ClassLibrary
             phase_future = 0;
 
         }
-
-
-
-
+        public void color()
+        {
+            if (temperature_actual < -0.5)
+            {
+    
+                
+            }
+            else
+            { 
+            
+            }
+        
+        }
+        
     }
 }

@@ -161,10 +161,12 @@ namespace WPF
             //var element = (UIElement)e.Source;
             //int row = Grid.GetRow(element);
             //int column = Grid.GetColumn(element);
-            MessageBox.Show("Column:" +ColumnPosition);
-            MessageBox.Show("Row:" +RowPosition);
-            MessageBox.Show("Phase:" +phase);
-            MessageBox.Show("Temperature:" +temp);
+            MessageBox.Show(String.Format("Column: {0} \n Row: {1}\n Phase: {2}\n Temparature: {3}", ColumnPosition, RowPosition, phase, temp), "Results");
+
+            //MessageBox.Show("Column:" + ColumnPosition);
+            //MessageBox.Show("Row:" +RowPosition);
+            //MessageBox.Show("Phase:" +phase);
+            //MessageBox.Show("Temperature:" +temp);
         }
 
         private double ColumnComputation(ColumnDefinitionCollection c, double YPosition)
@@ -198,14 +200,19 @@ namespace WPF
             {
                 if (comboBox_boundary.SelectedIndex == 0) 
                 { 
-                    matrix.initialconditions(1); 
+                    matrix.initialconditions(0); 
                 }
                 else 
                 { 
-                    matrix.initialconditions(0); 
+                    matrix.initialconditions(1); 
                 }
                 matrix.initialSolid(Convert.ToInt32(Math.Ceiling(Convert.ToDouble(rows / 2))), Convert.ToInt32(Math.Ceiling(Convert.ToDouble(columns / 2))));
             }
+        }
+
+        private void dataGrid1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }       
 
 
