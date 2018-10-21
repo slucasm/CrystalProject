@@ -4,6 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Resources;
+using System.Windows.Shapes;
+using System.Windows.Media;
+
+
+
+
 
 
 namespace ClassLibrary
@@ -113,8 +119,125 @@ namespace ClassLibrary
             return tuple;
         }
 
+        public Rectangle[,] colorearphase(Rectangle[,] matrixrectangle_phase)
+        {
 
-       
+            for (int i = 0; i < numberrows; i++)
+            {
+                for (int j = 0; j < numbercolumns; j++)
+                {
+                    double phase = matrix[i, j].getPhase();
+                    if (phase > 0.95)
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                    }
+                    else if (phase < 0.95 && phase > 0.85)
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(205, 255, 255));
+                    }
+                    else if (phase < 0.85 && phase > 0.75)
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(155, 255, 250));
+                    }
+                    else if (phase < 0.75 && phase > 0.65)
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(105, 255, 255));
+                    }
+                    else if (phase < 0.65 && phase > 0.55)
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(55, 255, 255));
+                    }
+                    else if (phase < 0.55 && phase > 0.45)
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(5, 255, 255));
+                    }
+                    else if (phase < 0.45 && phase > 0.35)
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(0, 210, 255));
+                    }
+                    else if (phase < 0.35 && phase > 0.25)
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(0, 170, 255));
+                    }
+                    else if (phase < 0.25 && phase > 0.15)
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(0, 120, 255));
+                    }
+                    else if (phase < 0.15 && phase > 0.05)
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(0, 70, 250));
+                    }
+                    else
+                    {
+                        matrixrectangle_phase[i, j].Fill = new SolidColorBrush(Color.FromRgb(0, 20, 255));
+                    }
+
+                }
+            }
+            return matrixrectangle_phase;
+        }
+
+
+        public Rectangle[,] colortemperature(Rectangle[,] matrixrectangle_temperature)
+        {
+
+            for (int i = 0; i < numberrows; i++)
+            {
+                for (int j = 0; j < numbercolumns; j++)
+                {
+                    double temperature = matrix[i, j].getTemperature();
+                    if (temperature < -0.95)
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                    }
+                    else if (temperature > -0.95 && temperature < -0.85)
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 230, 230));
+                    }
+                    else if (temperature > -0.85 && temperature < -0.75)
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 204, 204));
+                    }
+                    else if (temperature > -0.75 && temperature < -0.65)
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 179, 179));
+                    }
+                    else if (temperature > -0.65 && temperature < -0.55)
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 153, 153));
+                    }
+                    else if (temperature > -0.55 && temperature < -0.45)
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 128, 128));
+                    }
+                    else if (temperature > -0.45 && temperature < -0.35)
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 102, 102));
+                    }
+                    else if (temperature > -0.35 && temperature < -0.25)
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 77, 77));
+                    }
+                    else if (temperature > -0.25 && temperature < -0.15)
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 51, 51));
+                    }
+                    else if (temperature > -0.15 && temperature < -0.05)
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 26, 26));
+                    }
+                    else
+                    {
+                        matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                    }
+
+                }
+            }
+            return matrixrectangle_temperature;
+        }
+
+
+    
 
     }
 }
