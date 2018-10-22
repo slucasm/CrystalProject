@@ -1,9 +1,9 @@
 ﻿<Window x:Class="WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="640" Width="860" Loaded="Window_Loaded">
+        Title="Crystal Project" Height="640" Width="755" Loaded="Window_Loaded" Icon="/WPF;component/Images/71Imq3vXaGL._SL1440_.jpg" AllowsTransparency="False">
     <Grid Width="795" Height="565">
-        <GroupBox Header="Conditions" Height="142" HorizontalAlignment="Left" Margin="186,7,0,0" Name="groupBox_conditions" VerticalAlignment="Top" Width="444">
+        <GroupBox Height="142" HorizontalAlignment="Left" Margin="259,34,0,0" Name="groupBox_conditions" VerticalAlignment="Top" Width="444" Foreground="White" Background="#FFE0E1E3">
             <Grid Height="117" Width="424">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="45*" />
@@ -22,17 +22,34 @@
                 <ComboBox Grid.Column="1" Height="23" HorizontalAlignment="Right" Margin="0,73,6,0" Name="comboBox_boundary" VerticalAlignment="Top" Width="100" SelectionChanged="comboBox_boundary_SelectionChanged" ItemsSource="{Binding}" SelectedIndex="-1" FontFamily="Segoe UI" />
             </Grid>
         </GroupBox>
-        <Label Content="Columns:" Height="28" HorizontalAlignment="Left" Margin="30,16,0,0" Name="label_columns" VerticalAlignment="Top" />
-        <Label Content="Rows:" Height="28" HorizontalAlignment="Left" Margin="30,51,0,0" Name="label_rows" VerticalAlignment="Top" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="95,20,0,0" Name="textBox_columns" VerticalAlignment="Top" Width="41" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="95,55,0,0" Name="textBox_rows" VerticalAlignment="Top" Width="41" />
-        <Button Content="Create grid" Height="23" HorizontalAlignment="Left" Margin="54,98,0,0" Name="button_creategrid" VerticalAlignment="Top" Width="75" Click="button_creategrid_Click" />
-        <Button Content="Advance one cycle" Height="42" HorizontalAlignment="Left" Margin="621,224,0,0" Name="button_ciclo" VerticalAlignment="Top" Width="122" Click="button_ciclo_Click" />
-        <Button Content="Start simulation" Height="42" HorizontalAlignment="Left" Margin="621,272,0,0" Name="button_start" VerticalAlignment="Top" Width="122" Click="button_start_Click" />
-        <Button Content="Stop simulation" Height="40" HorizontalAlignment="Left" Margin="621,320,0,0" Name="button_stop" VerticalAlignment="Top" Width="122" Click="button_stop_Click" />
-        <Slider Height="23" HorizontalAlignment="Left" Margin="621,382,0,0" Name="slider_speed" VerticalAlignment="Top" Width="122" Maximum="2" Minimum="0.1" Interval="1" ValueChanged="slider_speed_ValueChanged" />
-        <Grid Height="321" HorizontalAlignment="Left" Margin="84,198,0,0" Name="grid_phase" VerticalAlignment="Top" Width="470" MouseDown="grid_phase_MouseDown" Background="#FFEAF2DC"></Grid>
-        <Grid Height="321" HorizontalAlignment="Left" Margin="84,198,0,0" Name="grid_temperature" VerticalAlignment="Top" Width="470" MouseDown="grid_temperature_MouseDown" Visibility="Visible" Background="#FFE1EFCA" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="233,169,0,0" Name="comboBox_grid" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="comboBox_grid_SelectionChanged" />
+        <Label Content="COLUMNS:" Height="28" HorizontalAlignment="Left" Margin="54,68,0,0" Name="label_columns" VerticalAlignment="Top" Foreground="White" FontSize="14" />
+        <Label Content="ROWS:" Height="28" HorizontalAlignment="Left" Margin="54,34,0,0" Name="label_rows" VerticalAlignment="Top" Foreground="White" FontSize="14" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="142,73,0,0" Name="textBox_columns" VerticalAlignment="Top" Width="41" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="142,38,0,0" Name="textBox_rows" VerticalAlignment="Top" Width="41" />
+        <Button Content="CREATE GRID" Height="36" HorizontalAlignment="Left" Margin="54,115,0,0" Name="button_creategrid" VerticalAlignment="Top" Width="129" Click="button_creategrid_Click" FontWeight="Bold" />
+        <Button Content="ONE CYCLE" Height="42" HorizontalAlignment="Left" Margin="570,313,0,0" Name="button_ciclo" VerticalAlignment="Top" Width="133" Click="button_ciclo_Click" Foreground="Black" />
+        <Button Height="42" HorizontalAlignment="Left" Margin="570,361,0,0" Name="button_start" VerticalAlignment="Top" Width="42" Click="button_start_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/WPF;component/Images/play.jpg" />
+            </Button.Background>
+        </Button>
+        <Button Height="40" HorizontalAlignment="Right" Margin="0,363,138,0" Name="button_stop" VerticalAlignment="Top" Width="40" Click="button_stop_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/WPF;component/Images/pausa.jpg" />
+            </Button.Background>
+        </Button>
+        <Slider Height="23" HorizontalAlignment="Left" Margin="570,421,0,0" Name="slider_speed" VerticalAlignment="Top" Width="133" Maximum="2" Minimum="0.1" Interval="1" ValueChanged="slider_speed_ValueChanged" />
+        <Grid Height="321" HorizontalAlignment="Left" Margin="54,232,0,0" Name="grid_phase" VerticalAlignment="Top" Width="470" MouseDown="grid_phase_MouseDown" Background="#FFEAF2DC"></Grid>
+        <Grid Height="321" HorizontalAlignment="Left" Margin="54,232,0,0" Name="grid_temperature" VerticalAlignment="Top" Width="470" MouseDown="grid_temperature_MouseDown" Visibility="Visible" Background="#FFE1EFCA" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="54,203,0,0" Name="comboBox_grid" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="comboBox_grid_SelectionChanged" />
+        <Label Content="CONDITIONS:" FontSize="16" Foreground="White" Height="28" HorizontalAlignment="Left" Margin="243,0,0,0" Name="label1" VerticalAlignment="Top" FontWeight="Bold" />
+        <Button Height="40" HorizontalAlignment="Left" Margin="663,363,0,0" Name="button1" VerticalAlignment="Top" Width="40">
+            <Button.Background>
+                <ImageBrush ImageSource="/WPF;component/Images/stop.jpg" />
+            </Button.Background>
+        </Button>
     </Grid>
+    <Window.Background>
+        <ImageBrush ImageSource="/WPF;component/Images/ice-crystals-1.jpg" />
+    </Window.Background>
 </Window>
