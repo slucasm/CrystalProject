@@ -1,0 +1,11 @@
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\MainWindow.baml
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\MainWindow.g.cs
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\App.g.cs
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\CrystalProject_MarkupCompile.cache
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\CrystalProject.g.resources
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\Cristal.Main.resources
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\Cristal.Properties.Resources.resources
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\CrystalProject\obj\x86\Debug\Form1.resources

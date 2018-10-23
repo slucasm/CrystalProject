@@ -1,0 +1,6 @@
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\ClassLibrary\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\ClassLibrary\bin\Debug\ClassLibrary.dll
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\ClassLibrary\bin\Debug\ClassLibrary.pdb
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\ClassLibrary\obj\Debug\ClassLibrary.dll
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\ClassLibrary\obj\Debug\ClassLibrary.pdb
+C:\Users\Marc2\Desktop\Crystal Project\CrystalProject\CrystalProject\ClassLibrary\bin\Debug\DynamicDataDisplay.dll
