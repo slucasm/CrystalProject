@@ -16,6 +16,12 @@ using System.Data;
 using System.Windows.Threading;
 
 
+using Microsoft.Research.DynamicDataDisplay; // Core functionality
+using Microsoft.Research.DynamicDataDisplay.DataSources; // EnumerableDataSource
+using Microsoft.Research.DynamicDataDisplay.PointMarkers; // CirclePointMarker
+
+
+
 namespace WPF
 {
     /// <summary>
@@ -26,6 +32,7 @@ namespace WPF
         public MainWindow()
         {
             InitializeComponent();
+           
         }
 
         public List<Conditions> conditionslist = new List<Conditions>(); //= new List<Conditions>();
@@ -35,6 +42,15 @@ namespace WPF
         DispatcherTimer timer = new DispatcherTimer();
         int rows, columns;
         Boolean selectboundarycond = false;
+
+        List<Point> listPoint_solids = new List<Point>();
+        List<Point> listPoint_avgtemp = new List<Point>();
+        //RawDataSource d1 = new RawDataSource();//listPoint_solids);
+        //RawDataSource d2 = new RawDataSource();//listPoint_avgtemp);
+
+        ChartPlotter plot_phase = new ChartPlotter();
+        ChartPlotter plot_temp = new ChartPlotter();
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -53,8 +69,9 @@ namespace WPF
             slider_speed.Minimum = 1;
             slider_speed.Maximum = 1000;
             slider_speed.TickFrequency = 100;
-            
-            
+
+            grid_plotphase.Children.Add(plot_phase);
+            grid_plottemp.Children.Add(plot_temp);
 
             timer.Interval = TimeSpan.FromMilliseconds(slider_speed.Value);
             timer.Tick += timer_Tick;
@@ -67,6 +84,18 @@ namespace WPF
             matrix.actualizar();
             matrixrectangle_phase = matrix.colorearphase(matrixrectangle_phase);
             matrixrectangle_temperature = matrix.colortemperature(matrixrectangle_temperature);
+
+            listPoint_solids = matrix.contarsolids(listPoint_solids);
+            listPoint_avgtemp = matrix.avgtemp(listPoint_avgtemp);
+
+            RawDataSource d1 = new RawDataSource(listPoint_solids);
+            RawDataSource d2 = new RawDataSource(listPoint_avgtemp);
+
+            plot_phase.AddLineGraph(d1, Colors.Blue, 1, "Number solids");
+            plot_phase.LegendVisible = false;
+            plot_temp.AddLineGraph(d2, Colors.Red, 1, "Average temperature");
+            plot_temp.LegendVisible = false;
+
         }
 
         private void comboBox_conditions_Loaded(object sender, RoutedEventArgs e)
@@ -113,7 +142,7 @@ namespace WPF
                 grid_phase.RowDefinitions.Add(new RowDefinition());
                 grid_temperature.RowDefinitions.Add(new RowDefinition());
             }
-            
+
             matrixrectangle_phase = new Rectangle[rows, columns];
             matrixrectangle_temperature = new Rectangle[rows, columns];
 
@@ -121,7 +150,7 @@ namespace WPF
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    
+
                     matrixrectangle_phase[i, j] = new Rectangle();
                     matrixrectangle_phase[i, j].Fill = new SolidColorBrush(System.Windows.Media.Colors.White);
                     Grid.SetRow(matrixrectangle_phase[i, j], i);
@@ -135,15 +164,14 @@ namespace WPF
                     grid_temperature.Children.Add(matrixrectangle_temperature[i, j]);
                 }
             }
-            
+
             matrix = new Matriz(rows, columns, conditionslist[comboBox_conditions.SelectedIndex]);
             matrix.createMatrix();
 
             matrix.initialconditions(0); //Por defecto
-            
+
             tabla = matrix.createTable();
-            
-            
+
             //dataGrid_cells.ItemsSource = tabla.DefaultView;
         }
 
@@ -155,14 +183,23 @@ namespace WPF
 
         private void button_ciclo_Click(object sender, RoutedEventArgs e)
         {
-            //if (comboBox_boundary.SelectedIndex == 0) { matrix.initialconditions(1); }
-            //else { matrix.initialconditions(0); }
             if (selectboundarycond == true)
             {
                 matrix.neighbours();
                 matrix.actualizar();
                 matrixrectangle_phase = matrix.colorearphase(matrixrectangle_phase);
                 matrixrectangle_temperature = matrix.colortemperature(matrixrectangle_temperature);
+
+                listPoint_solids = matrix.contarsolids(listPoint_solids);
+                listPoint_avgtemp = matrix.avgtemp(listPoint_avgtemp);
+
+                RawDataSource d1 = new RawDataSource(listPoint_solids);
+                RawDataSource d2 = new RawDataSource(listPoint_avgtemp);
+
+                plot_phase.AddLineGraph(d1, Colors.Blue, 1,"Number solids");
+                plot_phase.LegendVisible = false;
+                plot_temp.AddLineGraph(d2, Colors.Red, 1,"Average temperature");
+                plot_temp.LegendVisible = false;
             }
             else
             {
@@ -205,7 +242,7 @@ namespace WPF
             string ColumnPosition = ColumnComputation(grid_phase.ColumnDefinitions, e.GetPosition(grid_phase).X).ToString();
             string RowPosition = RowComputation(grid_phase.RowDefinitions, e.GetPosition(grid_phase).Y).ToString();
 
-            Tuple<double,double> tuple = matrix.getphaseandtemperature(Convert.ToInt32(RowPosition), Convert.ToInt32(ColumnPosition));
+            Tuple<double, double> tuple = matrix.getphaseandtemperature(Convert.ToInt32(RowPosition), Convert.ToInt32(ColumnPosition));
             string phase = Convert.ToString(tuple.Item1);
             string temp = Convert.ToString(tuple.Item2);
 
@@ -242,18 +279,24 @@ namespace WPF
         {
             if (comboBox_boundary.SelectedIndex != -1)
             {
-                if (comboBox_boundary.SelectedIndex == 0) 
-                { 
-                    matrix.initialconditions(0); 
+                if (comboBox_boundary.SelectedIndex == 0)
+                {
+                    matrix.initialconditions(0);
                 }
-                else 
-                { 
-                    matrix.initialconditions(1); 
+                else
+                {
+                    matrix.initialconditions(1);
                 }
                 matrix.initialSolid(Convert.ToInt32(Math.Ceiling(Convert.ToDouble(rows / 2))), Convert.ToInt32(Math.Ceiling(Convert.ToDouble(columns / 2))));
                 matrixrectangle_phase = matrix.colorearphase(matrixrectangle_phase);
                 matrixrectangle_temperature = matrix.colortemperature(matrixrectangle_temperature);
                 selectboundarycond = true;
+
+                listPoint_solids = matrix.contarsolids(listPoint_solids);
+                listPoint_avgtemp = matrix.avgtemp(listPoint_avgtemp);
+
+                RawDataSource d1 = new RawDataSource(listPoint_solids);
+                RawDataSource d2 = new RawDataSource(listPoint_avgtemp);
             }
         }
 
@@ -265,7 +308,7 @@ namespace WPF
 
         private void grid_temperature_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            
+
             //int X = Convert.ToInt32(e.GetPosition(grid_temperature).X.ToString());
             //int Y = Convert.ToInt32(e.GetPosition(grid_temperature).Y.ToString());
             int height = Convert.ToInt32(grid_phase.Height.ToString());
@@ -277,7 +320,7 @@ namespace WPF
             string phase = Convert.ToString(tuple.Item1);
             string temp = Convert.ToString(tuple.Item2);
 
-            MessageBox.Show(String.Format("Column: {0} \n Row: {1}\n Temperature: {2}", ColumnPosition, RowPosition,temp), "Results");
+            MessageBox.Show(String.Format("Column: {0} \n Row: {1}\n Temperature: {2}", ColumnPosition, RowPosition, temp), "Results");
 
         }
 
@@ -301,7 +344,7 @@ namespace WPF
 
         }
 
-    
+
 
 
     }

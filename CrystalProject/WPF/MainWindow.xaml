@@ -1,8 +1,9 @@
 ﻿<Window x:Class="WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="640" Width="860" Loaded="Window_Loaded">
-    <Grid Width="795" Height="565">
+        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
+        Title="MainWindow" Height="693" Width="1153" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <Grid Width="1112" Height="650">
         <GroupBox Header="Conditions" Height="142" HorizontalAlignment="Left" Margin="186,7,0,0" Name="groupBox_conditions" VerticalAlignment="Top" Width="444">
             <Grid Height="117" Width="424">
                 <Grid.ColumnDefinitions>
@@ -34,5 +35,25 @@
         <Grid Height="321" HorizontalAlignment="Left" Margin="84,198,0,0" Name="grid_phase" VerticalAlignment="Top" Width="470" MouseDown="grid_phase_MouseDown" Background="#FFEAF2DC"></Grid>
         <Grid Height="321" HorizontalAlignment="Left" Margin="84,198,0,0" Name="grid_temperature" VerticalAlignment="Top" Width="470" MouseDown="grid_temperature_MouseDown" Visibility="Visible" Background="#FFE1EFCA" />
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="233,169,0,0" Name="comboBox_grid" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="comboBox_grid_SelectionChanged" />
+        <Border BorderBrush="Black" BorderThickness="1" Margin="84,198,558,131" />
+
+            <!--<d3:ChartPlotter Height="250" HorizontalAlignment="Left" Margin="750,300,0,0" Name="plot_temp" VerticalAlignment="Top" Width="250" />-->
+        <Grid Height="250" HorizontalAlignment="Left" Margin="795,355,0,0" Name="grid_plottemp" VerticalAlignment="Top" Width="250"></Grid>
+        <!--<d3:ChartPlotter Height="250" HorizontalAlignment="Left" Margin="750,20,0,0" Name="plot_phase" VerticalAlignment="Top" Width="250" />-->
+        <Grid Height="250" HorizontalAlignment="Left" Margin="795,55,0,0" Name="grid_plotphase" VerticalAlignment="Top" Width="250"></Grid>
+        <Label Content="Number of solids per iteration" Height="28" HorizontalAlignment="Left" Margin="835,25,0,0" Name="label_numsolids" VerticalAlignment="Top" />
+        <Label Content="Number of iterations" Height="31" HorizontalAlignment="Left" Margin="866,296,0,0" Name="label_plotphase_xlabel" VerticalAlignment="Top" />
+        <Label Content="Number of iterations" Height="25" HorizontalAlignment="Left" Margin="866,597,0,0" Name="label_plottemp_xlabel" VerticalAlignment="Top" />
+        <Label Content="Average temperature per iteration" Height="33" HorizontalAlignment="Left" Margin="832,327,0,0" Name="label_avgtemp" VerticalAlignment="Top" Width="184" />
+        <Label Content="Average temperature" Height="29" Margin="764,385,0,82" Name="label_avgtemplabel" VerticalAlignment="Center" HorizontalAlignment="Left" Width="183" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+            <Label.LayoutTransform>
+                <RotateTransform Angle="270"/>
+            </Label.LayoutTransform>
+        </Label>
+        <Label Content="NUmber of solid cells" Height="29" Margin="764,93,0,374" Name="label_yaxissolid" VerticalAlignment="Center" HorizontalAlignment="Left" Width="183" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+            <Label.LayoutTransform>
+                <RotateTransform Angle="270"/>
+            </Label.LayoutTransform>
+        </Label>
     </Grid>
 </Window>
