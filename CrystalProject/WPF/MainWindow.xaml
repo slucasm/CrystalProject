@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
-        Title="MainWindow" Height="693" Width="1153" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="693" Width="1153" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Icon="/WPF;component/Images/71Imq3vXaGL._SL1440_.jpg">
     <Grid Width="1112" Height="650">
-        <GroupBox Header="Conditions" Height="142" HorizontalAlignment="Left" Margin="186,7,0,0" Name="groupBox_conditions" VerticalAlignment="Top" Width="444">
-            <Grid Height="117" Width="424">
+        <GroupBox Header="CONDITIONS" Height="142" HorizontalAlignment="Left" Margin="199,7,0,0" Name="groupBox_conditions" VerticalAlignment="Top" Width="444" Foreground="White">
+            <Grid Height="117" Width="424" Background="#FFF8F7F5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="45*" />
                     <ColumnDefinition Width="319*" />
@@ -24,38 +24,61 @@
                 <ComboBox Grid.Column="1" Height="23" HorizontalAlignment="Right" Margin="0,73,6,0" Name="comboBox_boundary" VerticalAlignment="Top" Width="100" SelectionChanged="comboBox_boundary_SelectionChanged" ItemsSource="{Binding}" SelectedIndex="-1" FontFamily="Segoe UI" />
             </Grid>
         </GroupBox>
-        <Label Content="Columns:" Height="28" HorizontalAlignment="Left" Margin="30,16,0,0" Name="label_columns" VerticalAlignment="Top" />
-        <Label Content="Rows:" Height="28" HorizontalAlignment="Left" Margin="30,51,0,0" Name="label_rows" VerticalAlignment="Top" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="95,20,0,0" Name="textBox_columns" VerticalAlignment="Top" Width="41" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="95,55,0,0" Name="textBox_rows" VerticalAlignment="Top" Width="41" />
-        <Button Content="Create grid" Height="23" HorizontalAlignment="Left" Margin="54,98,0,0" Name="button_creategrid" VerticalAlignment="Top" Width="75" Click="button_creategrid_Click" />
-        <Button Content="Advance one cycle" Height="42" HorizontalAlignment="Left" Margin="621,224,0,0" Name="button_ciclo" VerticalAlignment="Top" Width="122" Click="button_ciclo_Click" />
-        <Button Content="Start simulation" Height="42" HorizontalAlignment="Left" Margin="621,272,0,0" Name="button_start" VerticalAlignment="Top" Width="122" Click="button_start_Click" />
-        <Button Content="Stop simulation" Height="40" HorizontalAlignment="Left" Margin="621,320,0,0" Name="button_stop" VerticalAlignment="Top" Width="122" Click="button_stop_Click" />
-        <Slider Height="23" HorizontalAlignment="Left" Margin="621,382,0,0" Name="slider_speed" VerticalAlignment="Top" Width="122" Maximum="2" Minimum="0.1" Interval="1" ValueChanged="slider_speed_ValueChanged" />
-        <Grid Height="321" HorizontalAlignment="Left" Margin="84,198,0,0" Name="grid_phase" VerticalAlignment="Top" Width="470" MouseDown="grid_phase_MouseDown" Background="#FFEAF2DC"></Grid>
-        <Grid Height="321" HorizontalAlignment="Left" Margin="84,198,0,0" Name="grid_temperature" VerticalAlignment="Top" Width="470" MouseDown="grid_temperature_MouseDown" Visibility="Visible" Background="#FFE1EFCA" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="233,169,0,0" Name="comboBox_grid" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="comboBox_grid_SelectionChanged" />
-        <Border BorderBrush="Black" BorderThickness="1" Margin="84,198,558,131" />
+        <Label Content="COLUMNS:" Height="28" HorizontalAlignment="Left" Margin="30,58,0,0" Name="label_columns" VerticalAlignment="Top" Foreground="White" FontSize="14" />
+        <Label Content="ROWS:" Height="28" HorizontalAlignment="Left" Margin="30,25,0,0" Name="label_rows" VerticalAlignment="Top" Foreground="White" FontSize="14" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="115,62,0,0" Name="textBox_columns" VerticalAlignment="Top" Width="41" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="115,29,0,0" Name="textBox_rows" VerticalAlignment="Top" Width="41" />
+        <Button Content="Create grid" Height="23" HorizontalAlignment="Left" Margin="30,98,0,0" Name="button_creategrid" VerticalAlignment="Top" Width="126" Click="button_creategrid_Click" />
+        <Button Content="Advance one cycle" Height="42" HorizontalAlignment="Left" Margin="579,296,0,0" Name="button_ciclo" VerticalAlignment="Top" Width="140" Click="button_ciclo_Click" />
+        <Button Height="42" HorizontalAlignment="Left" Margin="579,344,0,0" Name="button_start" VerticalAlignment="Top" Width="42" Click="button_start_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/WPF;component/Images/play.jpg" />
+            </Button.Background>
+        </Button>
+        <Button Height="42" HorizontalAlignment="Left" Margin="627,344,0,0" Name="button_stop" VerticalAlignment="Top" Width="44" Click="button_stop_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/WPF;component/Images/pausa.jpg" />
+            </Button.Background>
+        </Button>
+        <Slider Height="23" HorizontalAlignment="Left" Margin="579,416,0,0" Name="slider_speed" VerticalAlignment="Top" Width="140" Maximum="2" Minimum="0.1" Interval="1" ValueChanged="slider_speed_ValueChanged" />
+        <Grid Height="321" HorizontalAlignment="Left" Margin="58,247,0,0" Name="grid_phase" VerticalAlignment="Top" Width="470" MouseDown="grid_phase_MouseDown" Background="#FFEAF2DC"></Grid>
+        <Grid Height="321" HorizontalAlignment="Left" Margin="58,247,0,0" Name="grid_temperature" VerticalAlignment="Top" Width="470" MouseDown="grid_temperature_MouseDown" Visibility="Visible" Background="#FFE1EFCA" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="58,218,0,0" Name="comboBox_grid" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="comboBox_grid_SelectionChanged" />
+        <Border BorderBrush="Black" BorderThickness="1" Margin="58,247,584,82" />
 
             <!--<d3:ChartPlotter Height="250" HorizontalAlignment="Left" Margin="750,300,0,0" Name="plot_temp" VerticalAlignment="Top" Width="250" />-->
-        <Grid Height="250" HorizontalAlignment="Left" Margin="795,355,0,0" Name="grid_plottemp" VerticalAlignment="Top" Width="250"></Grid>
+        <Grid Height="250" HorizontalAlignment="Left" Margin="798,372,0,0" Name="grid_plottemp" VerticalAlignment="Top" Width="250"></Grid>
         <!--<d3:ChartPlotter Height="250" HorizontalAlignment="Left" Margin="750,20,0,0" Name="plot_phase" VerticalAlignment="Top" Width="250" />-->
-        <Grid Height="250" HorizontalAlignment="Left" Margin="795,55,0,0" Name="grid_plotphase" VerticalAlignment="Top" Width="250"></Grid>
-        <Label Content="Number of solids per iteration" Height="28" HorizontalAlignment="Left" Margin="835,25,0,0" Name="label_numsolids" VerticalAlignment="Top" />
-        <Label Content="Number of iterations" Height="31" HorizontalAlignment="Left" Margin="866,296,0,0" Name="label_plotphase_xlabel" VerticalAlignment="Top" />
-        <Label Content="Number of iterations" Height="25" HorizontalAlignment="Left" Margin="866,597,0,0" Name="label_plottemp_xlabel" VerticalAlignment="Top" />
-        <Label Content="Average temperature per iteration" Height="33" HorizontalAlignment="Left" Margin="832,327,0,0" Name="label_avgtemp" VerticalAlignment="Top" Width="184" />
-        <Label Content="Average temperature" Height="29" Margin="764,385,0,82" Name="label_avgtemplabel" VerticalAlignment="Center" HorizontalAlignment="Left" Width="183" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+        <Grid Height="250" HorizontalAlignment="Left" Margin="795,55,0,0" Name="grid_plotphase" VerticalAlignment="Top" Width="250">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="248*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Label Content="Number of solids per iteration" Height="28" HorizontalAlignment="Left" Margin="835,25,0,0" Name="label_numsolids" VerticalAlignment="Top" Foreground="Black" Background="#FFF8F7F5" />
+        <Label Content="Number of iterations" Height="31" HorizontalAlignment="Left" Margin="866,296,0,0" Name="label_plotphase_xlabel" VerticalAlignment="Top" Foreground="Black" Background="#FFF8F7F5" />
+        <Label Content="Number of iterations" Height="25" HorizontalAlignment="Left" Margin="869,614,0,0" Name="label_plottemp_xlabel" VerticalAlignment="Top" Background="#FFF8F7F5" />
+        <Label Content="Average temperature per iteration" Height="33" HorizontalAlignment="Left" Margin="835,344,0,0" Name="label_avgtemp" VerticalAlignment="Top" Width="184" Background="#FFF8F7F5" />
+        <Label Content="Average temperature" Height="29" Margin="767,402,0,65" Name="label_avgtemplabel" VerticalAlignment="Center" HorizontalAlignment="Left" Width="183" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#FFF8F7F5">
             <Label.LayoutTransform>
                 <RotateTransform Angle="270"/>
             </Label.LayoutTransform>
         </Label>
-        <Label Content="NUmber of solid cells" Height="29" Margin="764,93,0,374" Name="label_yaxissolid" VerticalAlignment="Center" HorizontalAlignment="Left" Width="183" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+        <Label Content="NUmber of solid cells" Height="29" Margin="764,93,0,374" Name="label_yaxissolid" VerticalAlignment="Center" HorizontalAlignment="Left" Width="183" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Black" Background="#FFF8F7F5">
             <Label.LayoutTransform>
                 <RotateTransform Angle="270"/>
             </Label.LayoutTransform>
         </Label>
+        <Button Height="42" HorizontalAlignment="Left" Margin="677,344,0,0" Name="restart" VerticalAlignment="Top" Width="42" Click="button1_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/WPF;component/Images/stop.jpg" />
+            </Button.Background>
+        </Button>
+        <Button Height="68" HorizontalAlignment="Right" Margin="0,31,377,0" Name="button2" VerticalAlignment="Top" Width="68" Click="button2_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/WPF;component/Images/s-l300.jpg" />
+            </Button.Background>
+        </Button>
     </Grid>
     <Window.Background>
         <ImageBrush ImageSource="/WPF;component/Images/ice-crystals-1.jpg" />

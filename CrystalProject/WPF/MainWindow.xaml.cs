@@ -131,6 +131,9 @@ namespace WPF
             grid_temperature.RowDefinitions.Clear();
             rows = Convert.ToInt32(textBox_rows.Text);
             columns = Convert.ToInt32(textBox_columns.Text);
+            //int lastgrid_rows = rows;
+            //int lastgrid_columns = columns;
+
             grid_phase.ShowGridLines = false;
             for (int j = 0; j < columns; j++)
             {
@@ -203,7 +206,7 @@ namespace WPF
             }
             else
             {
-                MessageBox.Show("Before the simulation you have to select boundary conditions");
+                MessageBox.Show("Please, select Boundary Conditions before the Simulation");
             }
         }
 
@@ -215,11 +218,11 @@ namespace WPF
             }
             else
             {
-                MessageBox.Show("Before the simulation you have to select boundary conditions");
+                MessageBox.Show("Please, select Boundary Conditions before the Simulation");
             }
         }
 
-        private void button_stop_Click(object sender, RoutedEventArgs e)
+        private void button_stop_Click(object sender, RoutedEventArgs e) //Stop Button
         {
             if (selectboundarycond == true)
             {
@@ -227,11 +230,22 @@ namespace WPF
             }
             else
             {
-                MessageBox.Show("Before the simulation you have to select boundary conditions");
+                MessageBox.Show("Please, select Boundary Conditions before the Simulation");
             }
         }
 
-
+        private void button1_Click(object sender, RoutedEventArgs e) //Restart Button
+        {
+            if (selectboundarycond == true)
+            {
+                timer.Stop();
+                //button_creategrid.Click += myEventHandler;
+            }
+            else
+            {
+                MessageBox.Show("Please, select Boundary Conditions before the Simulation");
+            }
+        }
 
         private void grid_phase_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -279,7 +293,7 @@ namespace WPF
         {
             if (comboBox_boundary.SelectedIndex != -1)
             {
-                if (comboBox_boundary.SelectedIndex == 0)
+                if (comboBox_boundary.SelectedIndex == 0) 
                 {
                     matrix.initialconditions(0);
                 }
@@ -343,6 +357,16 @@ namespace WPF
             }
 
         }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("This Crystal Project consists in ... \n\n\n\n\n\n\n\n\n This project has been made by: \n\n Enric Gil, Adrian Gonzalez & Sergi Lucas");
+
+        }
+
+
+
+
 
 
 
