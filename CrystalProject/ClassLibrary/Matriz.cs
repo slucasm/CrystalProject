@@ -19,6 +19,7 @@ namespace ClassLibrary
 {
     public class Matriz
     {
+        //Atributos
         Cell[,] matrix;
         int numberrows;
         int numbercolumns;
@@ -33,22 +34,23 @@ namespace ClassLibrary
             this.conditions = conditions;
         }
 
-        public DataTable createTable()
-        {
-            DataTable table = new DataTable();
-            for (int contadorcolumns = 0; contadorcolumns < numbercolumns; contadorcolumns++)
-            {
-                //DataColumn dc = new DataColumn("id", typeof(int));
-                table.Columns.Add();
-            }
-            for (int contadorrows = 0; contadorrows < numberrows; contadorrows++)
-            {
-                table.Rows.Add();
-            }
+        //public DataTable createTable()
+        //{
+        //    DataTable table = new DataTable();
+        //    for (int contadorcolumns = 0; contadorcolumns < numbercolumns; contadorcolumns++)
+        //    {
+        //        //DataColumn dc = new DataColumn("id", typeof(int));
+        //        table.Columns.Add();
+        //    }
+        //    for (int contadorrows = 0; contadorrows < numberrows; contadorrows++)
+        //    {
+        //        table.Rows.Add();
+        //    }
 
-            return table;
-        }
+        //    return table;
+        //}
 
+        //Inicializamos la matriz
         public void createMatrix()
         {
             this.matrix = new Cell[numberrows, numbercolumns];
@@ -65,7 +67,7 @@ namespace ClassLibrary
             {
                 for (int j = 0; j < numbercolumns; j++)
                 {
-                    if ((i == 0) || (j == 0) || (i == numberrows - 1) || (j == numbercolumns - 1)) //Only at boundaries
+                    if ((i == 0) || (j == 0) || (i == numberrows - 1) || (j == numbercolumns - 1)) //Solo en la frontera
                     {
                         if (boundary == 2) //Boundary Tconstant T=-1 (liquid)
                         {
@@ -81,26 +83,24 @@ namespace ClassLibrary
                         }
                         else //Boundary=0 Boundary reflecting
                         {
-                            //matrix[];
-
                             matrix[i, j] = new Cell(1, -1, conditions); //Temperatura -1, liquid
                             reflecting = true;
                             this.boundary = "Reflecting";
                         }
                     }
-                    else
+                    else //Fuera de la frontera llenamos todas las celdas de líquido
                     {
-                        //Error!: Select conditions please
                         matrix[i, j] = new Cell(1, -1, conditions);
                     }
                 }
             }
             //return matrix;
         }
+
+        //Seleccionamos una sola celda como sólida, siempre será la celda del medio del grid
         public void initialSolid(int i, int j)
         {
             matrix[i, j].setSolid();
-            //return matrix;
         }
 
 
@@ -121,8 +121,11 @@ namespace ClassLibrary
             //return matrix;
         }
 
+        //Actualizamos la matriz, asignamos los valores futuros de cada cell a actuales
+        //Separamos el actualizar la frontera y el interior
         public void actualizar()
         {
+            //Actualizar el interior del grid (sin la frontera)
             for (int i = 1; i < numberrows - 1; i++)
             {
                 for (int j = 1; j < numbercolumns - 1; j++)
@@ -130,57 +133,59 @@ namespace ClassLibrary
                     matrix[i, j].actualizar();
                 }
             }
-            actualizarboundary();
+            actualizarboundary(); //actualizar frontera
         }
 
+        //Función para actualizar frontera
         public void actualizarboundary()
         {
-            if (reflecting == false)
+            if (reflecting == false) //Solo actualizaremos la frontera en caso que hayamos seleccionado frontera reflectante
             {
 
             }
-            else
+            else //actualizamos frontera reflectante
             {
                 for (int i = 0; i < numberrows; i++)
                 {
                     for (int j = 0; j < numbercolumns; j++)
                     {
-                        if (i == 0 & j == 0)
+                        //Conjunto de if's para ir recorriendo toda la frontera
+                        if (i == 0 & j == 0) //esquina arriba izquierda
                         {
                             matrix[i, j].setPhase(matrix[i + 1, j + 1].getPhase());
                             matrix[i, j].setTemp(matrix[i + 1, j + 1].getTemperature());
                         }
-                        else if (i == 0 && j !=0 && j !=numbercolumns-1)
+                        else if (i == 0 && j !=0 && j !=numbercolumns-1) //primera fila (sin esquinas)
                         {
                             matrix[i, j].setPhase(matrix[i + 1, j].getPhase());
                             matrix[i, j].setTemp(matrix[i + 1, j].getTemperature());
                         }
-                        else if (j == 0 && i!=0 && i!=numberrows-1)
+                        else if (j == 0 && i!=0 && i!=numberrows-1) //primera columna (sin esquinas)
                         {
                             matrix[i, j].setPhase(matrix[i, j + 1].getPhase());
                             matrix[i, j].setTemp(matrix[i, j + 1].getTemperature());
                         }
-                        else if (i == numberrows-1 && j != 0 && j != numbercolumns-1)
+                        else if (i == numberrows-1 && j != 0 && j != numbercolumns-1)//última fila (sin esquinas)
                         {
                             matrix[i, j].setPhase(matrix[i -1, j].getPhase());
                             matrix[i, j].setTemp(matrix[i - 1, j].getTemperature());
                         }
-                        else if (j == numbercolumns-1 && i != 0 && i != numberrows-1)
+                        else if (j == numbercolumns-1 && i != 0 && i != numberrows-1)//última columna (sin esquinas)
                         {
                             matrix[i, j].setPhase(matrix[i, j - 1].getPhase());
                             matrix[i, j].setTemp(matrix[i, j - 1].getTemperature());
                         }
-                        else if (i == 0 && j == numbercolumns-1)
+                        else if (i == 0 && j == numbercolumns-1) //esquina arriba derecha
                         {
                             matrix[i, j].setPhase(matrix[i + 1, j - 1].getPhase());
                             matrix[i, j].setTemp(matrix[i + 1, j - 1].getTemperature());
                         }
-                        else if (j == 0 && i == numberrows-1)
+                        else if (j == 0 && i == numberrows-1) //esquina abajo izquierda
                         {
                             matrix[i, j].setPhase(matrix[i - 1, j + 1].getPhase());
                             matrix[i, j].setTemp(matrix[i - 1, j + 1].getTemperature());
                         }
-                        else if (j == numbercolumns-1 && i == numberrows-1)
+                        else if (j == numbercolumns-1 && i == numberrows-1) //esquina abajo derecha
                         {
                             matrix[i, j].setPhase(matrix[i - 1, j - 1].getPhase());
                             matrix[i, j].setTemp(matrix[i - 1, j - 1].getTemperature());
@@ -192,6 +197,7 @@ namespace ClassLibrary
 
         }
 
+        // Obtenemos phase y temp actual de la cell seleccionada
         public Tuple<double, double> getphaseandtemperature(int fila, int columna)
         {
             double phase = matrix[fila, columna].getPhase();
@@ -200,20 +206,22 @@ namespace ClassLibrary
             return tuple;
         }
 
+        //Función que devuelve matriz de rectángulos con los colores de cada cell de la matriz. 
+        //Bucle que recorre toda la matriz y va llamando en cada Cell la función colorear.
         public Rectangle[,] colorearphase(Rectangle[,] matrixrectangle_phase)
         {
             for (int i = 0; i < numberrows; i++)
             {
                 for (int j = 0; j < numbercolumns; j++)
                 {
-                    matrix[i, j].colear_phase();
-                    matrixrectangle_phase[i,j].Fill = matrix[i, j].getColorphase();               
+                    matrix[i, j].colear_phase();//Asignamos color a cell
+                    matrixrectangle_phase[i,j].Fill = matrix[i, j].getColorphase(); //Añadimos a la amtriz de rectangle el color de cada rectangle              
                 }
             }
             return matrixrectangle_phase;
         }
 
-
+        //Igual que colorear phase pero con temperatura
         public Rectangle[,] colortemperature(Rectangle[,] matrixrectangle_temperature)
         {
             for (int i = 0; i < numberrows; i++)
@@ -227,7 +235,7 @@ namespace ClassLibrary
             return matrixrectangle_temperature;
         }
 
-
+        //Devuelve una lista de puntos con el número de sólidos por iteración, esta lista sirve para el gráfico
         public List<Point> contarsolids(List<Point> listPoint_solids)
         {
             int contadorsolid = 0;
@@ -236,13 +244,14 @@ namespace ClassLibrary
             {
                 for (int j = 0; j < numbercolumns; j++)
                 {
-                    contadorsolid += matrix[i, j].isSolid();
+                    contadorsolid += matrix[i, j].isSolid();//recorremos toda la matriz de Cell contando si la Cell es sólida o no
                 }
             }
-            listPoint_solids.Add(new Point(contador,contadorsolid));
+            listPoint_solids.Add(new Point(contador,contadorsolid));//Añadimos un punto a la lista, eje X número de iteración y eje Y número de sólidos
             return listPoint_solids;
         }
 
+        //Devuelve una lista de puntos con la temperatura media por iteración
         public List<Point> avgtemp(List<Point> listPoint_avgtemp)
         {
             double sumatemp = 0;
@@ -252,15 +261,16 @@ namespace ClassLibrary
             {
                 for (int j = 0; j < numbercolumns; j++)
                 {
-                    sumatemp += matrix[i, j].getTemperature();
+                    sumatemp += matrix[i, j].getTemperature();//recorremos la amtriz de Cell sumando las temperaturas
                     n++;
                 }
             }
-            double avgtemp = sumatemp / n;
-            listPoint_avgtemp.Add(new Point(contador, avgtemp));
+            double avgtemp = sumatemp / n; //calculo temp media
+            listPoint_avgtemp.Add(new Point(contador, avgtemp));//Añadimos un punto a la lista, eje X número de iteración y eje Y temperatura media
             return listPoint_avgtemp;
         }
 
+        //guarda todos los elementos en un archivo txt
         public void guardar(List<Point> listPoint_solids,List<Point> listPoint_avgtemp)
         {
             SaveFileDialog ofd = new SaveFileDialog();
@@ -270,10 +280,11 @@ namespace ClassLibrary
             ofd.ShowDialog();
             string nombre = ofd.FileName;
             StreamWriter fichero = new StreamWriter(nombre);
-            fichero.Write(numberrows);
+            fichero.Write(numberrows);//filas
             fichero.Write(" ");
-            fichero.Write(numbercolumns);
+            fichero.Write(numbercolumns);//columnas
             fichero.Write("\r\n");
+            //escribe condiciones
             fichero.Write(conditions.getname());
             fichero.Write(" ");
             fichero.Write(conditions.getdelta_x());
@@ -290,8 +301,9 @@ namespace ClassLibrary
             fichero.Write(" ");
             fichero.Write(conditions.getepsylon());
             fichero.Write("\r\n");
-            fichero.Write(this.boundary);
+            fichero.Write(this.boundary);//escribe boundary condition
             fichero.Write("\r\n");
+            //escribe valor de phase de cada una de las cell de la matriz
             for (int i = 0; i < numberrows; i++)
             {
                 for (int j = 0; j < numbercolumns; j++)
@@ -301,6 +313,7 @@ namespace ClassLibrary
                 }
                 fichero.Write("\r\n");
             }
+            //escribe valor temperatura de cada una de las cell de la matriz
             for (int i = 0; i < numberrows; i++)
             {
                 for (int j = 0; j < numbercolumns; j++)
@@ -310,33 +323,38 @@ namespace ClassLibrary
                 }
                 fichero.Write("\r\n");
             }
+            //escribe la lista de puntos de número de sólidos por iteración
             for (int i = 0; i < listPoint_solids.Count; i++)
             {
-                fichero.Write(listPoint_solids[i].X);
+                fichero.Write(listPoint_solids[i].X);//escribe las iteraciones
                 fichero.Write(" ");
             }
             fichero.Write("\r\n");
             for (int i = 0; i < listPoint_solids.Count; i++)
             {
-                fichero.Write(listPoint_solids[i].Y);
+                fichero.Write(listPoint_solids[i].Y);//escribe el número de sólidos
+                fichero.Write(" ");
+            }
+            fichero.Write("\r\n");
+
+            //escribe la lista de puntos de temperatura media por iteración
+            for (int i = 0; i < listPoint_avgtemp.Count; i++)
+            {
+                fichero.Write(listPoint_avgtemp[i].X);//escribe iteraciones
                 fichero.Write(" ");
             }
             fichero.Write("\r\n");
             for (int i = 0; i < listPoint_avgtemp.Count; i++)
             {
-                fichero.Write(listPoint_avgtemp[i].X);
-                fichero.Write(" ");
-            }
-            fichero.Write("\r\n");
-            for (int i = 0; i < listPoint_avgtemp.Count; i++)
-            {
-                fichero.Write(listPoint_avgtemp[i].Y);
+                fichero.Write(listPoint_avgtemp[i].Y);//escribe temperatura media
                 fichero.Write(" ");
             }
             fichero.Write("\r\n");
             fichero.Close();
         }
 
+        //Abre un archivo .txt con el formato en que guardamos los datos. 
+        //Devolvemos un tuple con número de filas, número columnas, condiciones, tipo de boundary conditions, matriz de Cell, y las dos listas de puntos para las gráficas
         public Tuple<int,int,Conditions,String,Cell[,],List<Point>,List<Point>> abrir()
         {
             OpenFileDialog ofd = new OpenFileDialog();

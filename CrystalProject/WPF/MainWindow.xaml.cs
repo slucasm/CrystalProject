@@ -35,52 +35,55 @@ namespace WPF
            
         }
 
-        public List<Conditions> conditionslist = new List<Conditions>(); //= new List<Conditions>();
+        public List<Conditions> conditionslist = new List<Conditions>(); 
         Matriz matrix;
-        DataTable tabla;
-        Rectangle[,] matrixrectangle_phase, matrixrectangle_temperature;
-        DispatcherTimer timer = new DispatcherTimer();
+        Rectangle[,] matrixrectangle_phase, matrixrectangle_temperature; //matriz de Rectangle, lo utilizamos para los colores
+        DispatcherTimer timer = new DispatcherTimer(); //timer
         int rows, columns;
-        Boolean selectboundarycond = false;
-        Boolean creategrid = false;
+        Boolean selectboundarycond = false; //booleano para saber si hemos selecionado boundary conditions
+        Boolean creategrid = false; //booleano para saber si hemos creado la matriz
 
-        List<Point> listPoint_solids = new List<Point>();
-        List<Point> listPoint_avgtemp = new List<Point>();
-        //RawDataSource d1 = new RawDataSource();//listPoint_solids);
-        //RawDataSource d2 = new RawDataSource();//listPoint_avgtemp);
+        //Dos listas de puntos
+        List<Point> listPoint_solids = new List<Point>();//De cada punto, eje X: número de iteración, eje Y: número de sólidos
+        List<Point> listPoint_avgtemp = new List<Point>();//De cada punto, ejeX: número de iteración, eje Y: temperatura media de la matriz
 
-        ChartPlotter plot_phase = new ChartPlotter();
-        ChartPlotter plot_temp = new ChartPlotter();
+        ChartPlotter plot_phase = new ChartPlotter();//Creamos un gráfico para número de sólidos/iteración
+        ChartPlotter plot_temp = new ChartPlotter();//Creamos un gráfico para temperatura media(iteración
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
+                //Definimos 2 condiciones estándar
                 Conditions condition1 = new Conditions(0.005, 0.005, 0.005, 20, 5e-6, 0.5, 400, "Standard 1");
                 Conditions condition2 = new Conditions(0.005, 0.005, 0.005, 30, 5e-6, 0.7, 300, "Standard 2");
+                //Añadimos condiciones al combobox
                 conditionslist.Add(condition1);
                 conditionslist.Add(condition2);
+                //Añadimos tipo de boundary conditions al combobox correspondiente
                 comboBox_boundary.Items.Add("Reflecting");
                 comboBox_boundary.Items.Add("T constant solid");
                 comboBox_boundary.Items.Add("T constant liquid");
                 comboBox_boundary.SelectedIndex = -1;
-
+                
+                //Combobox para variar entre las dos gráficas
                 comboBox_grid.Items.Add("Phase grid");
                 comboBox_grid.Items.Add("Temperature grid");
                 comboBox_grid.SelectedIndex = 0;
 
+                //Parámetros slider
                 slider_speed.Minimum = 1;
                 slider_speed.Maximum = 1000;
                 slider_speed.TickFrequency = 100;
                 slider_speed.Value = 1000;
 
-
+                //Añadimos a las gráficas a dos grids, para mostrarlo en la MainWindow
                 grid_plotphase.Children.Add(plot_phase);
                 grid_plottemp.Children.Add(plot_temp);
 
-                timer.Interval = TimeSpan.FromMilliseconds(slider_speed.Value);
-                timer.Tick += timer_Tick;
+                timer.Interval = TimeSpan.FromMilliseconds(slider_speed.Value);//Definimos velocidad timer
+                timer.Tick += timer_Tick;//Definimos función para el Tick
             }
             catch (Exception a)
             {
@@ -88,23 +91,25 @@ namespace WPF
             }
 
         }
-        private void timer_Tick(object sender, EventArgs e)
+        private void timer_Tick(object sender, EventArgs e) //Definimos instrucciones del timer en cada tick
         {
             try
             {
+                //actualizamos matriz y pintamos matriz de rectangle (para poder hacer esto primero la matriz debe estar creada)
                 matrix.neighbours();
                 matrix.actualizar();
                 matrixrectangle_phase = matrix.colorearphase(matrixrectangle_phase);
                 matrixrectangle_temperature = matrix.colortemperature(matrixrectangle_temperature);
 
+                //actualizamos listas de puntos
                 listPoint_solids = matrix.contarsolids(listPoint_solids);
                 listPoint_avgtemp = matrix.avgtemp(listPoint_avgtemp);
-
                 RawDataSource d1 = new RawDataSource(listPoint_solids);
                 RawDataSource d2 = new RawDataSource(listPoint_avgtemp);
 
+                //añadimos cada iteración el nuevo punto a cada gráfica
                 plot_phase.AddLineGraph(d1, Colors.Blue, 1, "Number solids");
-                plot_phase.LegendVisible = false;
+                plot_phase.LegendVisible = false;//quitamos leyenda para que no se multiplique
                 plot_temp.AddLineGraph(d2, Colors.Red, 1, "Average temperature");
                 plot_temp.LegendVisible = false;
             }
@@ -119,6 +124,7 @@ namespace WPF
         {
             try
             {
+                //Cargamos las labels de las conditiones
                 comboBox_conditions.Items.Add("Standard 1");
                 comboBox_conditions.Items.Add("Standard 2");
                 comboBox_conditions.SelectedIndex = 0;
@@ -136,10 +142,11 @@ namespace WPF
             }
         }
 
-        private void comboBox_conditions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void comboBox_conditions_SelectionChanged(object sender, SelectionChangedEventArgs e)//en caso de seleccionar otra condición se actualizan labels
         {
             try
             {
+                //Cambiamos labels de las condiciones según la condición seleccionada
                 label_AX.Content = "∆X: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getdelta_x());
                 label_AY.Content = "∆Y: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getdelta_y());
                 label_epsylon.Content = "ε: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getepsylon());
@@ -154,16 +161,19 @@ namespace WPF
             }
         }
 
-        public void creargrid()
+        public void creargrid() //inicializamos grid
         { 
             try
             {
+                //borramos todo lo que havia cargado, para evitar errores
                 grid_phase.ColumnDefinitions.Clear();
                 grid_temperature.ColumnDefinitions.Clear();
                 grid_phase.RowDefinitions.Clear();
                 grid_temperature.RowDefinitions.Clear();
                 listPoint_avgtemp.Clear();
                 listPoint_solids.Clear();
+
+                //si rows y columns es positivo seguimos, sinó, no podemos avanzar
                     if ((Convert.ToInt32(textBox_rows.Text) <= 0) || (Convert.ToInt32(textBox_columns.Text) <= 0))
                         {
                              MessageBox.Show("Please, insert a positive number");
@@ -174,6 +184,7 @@ namespace WPF
                     columns = Convert.ToInt32(textBox_columns.Text);
 
                     grid_phase.ShowGridLines = false;
+                        //creamos filas y columnas del grid
                     for (int j = 0; j < columns; j++)
                     {
                         grid_phase.ColumnDefinitions.Add(new ColumnDefinition());
@@ -184,11 +195,11 @@ namespace WPF
                         grid_phase.RowDefinitions.Add(new RowDefinition());
                         grid_temperature.RowDefinitions.Add(new RowDefinition());
                     }
-
+                        //Creamos 2 matriz de Rectangle del mismo tamaño que matrix
                     matrixrectangle_phase = new Rectangle[rows, columns];
                     matrixrectangle_temperature = new Rectangle[rows, columns];
 
-                    for (int i = 0; i < rows; i++)
+                    for (int i = 0; i < rows; i++)//rellenamos grid_phase y grid_tempemperature de la matrix de rectangle correspondiente
                     {
                         for (int j = 0; j < columns; j++)
                         {
@@ -207,15 +218,10 @@ namespace WPF
                         }
                     }
 
-                    matrix = new Matriz(rows, columns, conditionslist[comboBox_conditions.SelectedIndex]);
+                    matrix = new Matriz(rows, columns, conditionslist[comboBox_conditions.SelectedIndex]);//llenamos matriz de Cell
                     matrix.createMatrix();
-
                     matrix.initialconditions(0); //Por defecto
-
-                    tabla = matrix.createTable();
-
                     creategrid = true;
-                    //dataGrid_cells.ItemsSource = tabla.DefaultView;
                 }
             }
             catch (FormatException e)
@@ -225,12 +231,12 @@ namespace WPF
         }
 
 
-        private void button_creategrid_Click(object sender, RoutedEventArgs e)
+        private void button_creategrid_Click(object sender, RoutedEventArgs e)//Creamos grid
         {
             try
             {
                 creargrid();
-                comboBox_boundary.IsEnabled = true;
+                comboBox_boundary.IsEnabled = true;//Mostramos combobox de las condiciones de frontera
             }
             catch (Exception f)
             {
@@ -238,11 +244,11 @@ namespace WPF
             }
         }
 
-        private void button_newcond_Click(object sender, RoutedEventArgs e)
+        private void button_newcond_Click(object sender, RoutedEventArgs e)//abrimos form de crear nueva condición
         {
             try
             {
-                Create_condition crearcondition = new Create_condition(this);
+                Create_condition crearcondition = new Create_condition(this);//le enviamos al form Create_conditions los datos de este Form
                 crearcondition.Show();
             }
             catch (Exception g)
@@ -255,12 +261,13 @@ namespace WPF
         {
             try
             {
-                if (creategrid == false)
+                if (creategrid == false)//si la amtriz no está creada no podemos avanzar
                 {
                     MessageBox.Show("Please, create the GRID before the Simulation");
                 }
-                else if (selectboundarycond == true && creategrid == true)
+                else if (selectboundarycond == true && creategrid == true) //si la matriz está creada, y la condición de frontera también podemos avanzar
                 {
+                    //Actualizamos datos
                     matrix.neighbours();
                     matrix.actualizar();
                     matrixrectangle_phase = matrix.colorearphase(matrixrectangle_phase);
@@ -269,15 +276,15 @@ namespace WPF
                     listPoint_solids = matrix.contarsolids(listPoint_solids);
                     listPoint_avgtemp = matrix.avgtemp(listPoint_avgtemp);
 
+                    //añadimos datos actualizados a las gráficas
                     RawDataSource d1 = new RawDataSource(listPoint_solids);
                     RawDataSource d2 = new RawDataSource(listPoint_avgtemp);
-
                     plot_phase.AddLineGraph(d1, Colors.Blue, 1, "Number solids");
                     plot_phase.LegendVisible = false;
                     plot_temp.AddLineGraph(d2, Colors.Red, 1, "Average temperature");
                     plot_temp.LegendVisible = false;
                 }
-                else if (selectboundarycond == false)
+                else if (selectboundarycond == false) //si no hemos seleccionado la condición de frontera no podemos avanzar
                 {
                     MessageBox.Show("Please, select Boundary Conditions before the Simulation");
                 }
@@ -288,7 +295,7 @@ namespace WPF
             }
         }
 
-        private void button_start_Click(object sender, RoutedEventArgs e)
+        private void button_start_Click(object sender, RoutedEventArgs e)//Start simulation button
         {
             try
             {
@@ -296,7 +303,7 @@ namespace WPF
                 {
                     MessageBox.Show("Please, create the GRID before the Simulation");
                 }
-                else if (selectboundarycond == true && creategrid == true)
+                else if (selectboundarycond == true && creategrid == true)//Solo funciona si hemos creado matriz y seleccionado condicion de frontera
                 {
                     timer.Start();
                 }
@@ -335,7 +342,7 @@ namespace WPF
             }
         }
 
-        private void button_restart_Click(object sender, RoutedEventArgs e)
+        private void button_restart_Click(object sender, RoutedEventArgs e)//Restart button
         {
             try
             {
@@ -345,6 +352,7 @@ namespace WPF
                 }
                 else if (selectboundarycond == true && creategrid == true)
                 {
+                    //paramos simulación y reestblecemos todo
                     timer.Stop();
                     creargrid();
                     plot_phase.Children.RemoveAll((typeof(LineGraph)));
@@ -371,9 +379,10 @@ namespace WPF
 
         
 
-        private void grid_phase_MouseDown(object sender, MouseButtonEventArgs e)
+        private void grid_phase_MouseDown(object sender, MouseButtonEventArgs e)//Click en grid_phase
         {
-            try
+            try //Nos da un MessageBox con el número de fila y columna seleccionado, y el valor de phase de la celda
+                //Llamamos a dos funciones que hemos creado para saber número de fila y columna según la posición X,Y que hemos clickado en el grid
             {
                 int height = Convert.ToInt32(grid_phase.Height.ToString());
                 int width = Convert.ToInt32(grid_phase.Width.ToString());
@@ -393,7 +402,7 @@ namespace WPF
 
         }
 
-        private double ColumnComputation(ColumnDefinitionCollection c, double YPosition)
+        private double ColumnComputation(ColumnDefinitionCollection c, double YPosition)//Cálculo de la columna según posición Y que hemos clickado en el grid_phase
         {
             var columnLeft = 0.0; var columnCount = 0;
             foreach (ColumnDefinition cd in c)
@@ -405,7 +414,7 @@ namespace WPF
             }
             return (c.Count + 1);
         }
-        private double RowComputation(RowDefinitionCollection r, double XPosition)
+        private double RowComputation(RowDefinitionCollection r, double XPosition)//Cálculo de la fila según posición X que hemos clickado en el grid
         {
             var rowTop = 0.0; var rowCount = 0;
             foreach (RowDefinition rd in r)
@@ -418,9 +427,9 @@ namespace WPF
             return (r.Count + 1);
         }
 
-        private void comboBox_boundary_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void comboBox_boundary_SelectionChanged(object sender, SelectionChangedEventArgs e)//Si combobox_boundary cambia de valor
         {
-            try
+            try//cambiamos initialconditions de la matriz si desplegamos el combobox
             {
                 if ((comboBox_boundary.SelectedIndex != -1)) //&& (matrix != null))
                 {
@@ -440,6 +449,7 @@ namespace WPF
                     {
                         matrix.initialconditions(-1);
                     }
+                    //inicializamos otra vez la matriz con los nuevos valores
                     matrix.initialSolid(Convert.ToInt32(Math.Ceiling(Convert.ToDouble(rows / 2))), Convert.ToInt32(Math.Ceiling(Convert.ToDouble(columns / 2))));
                     matrixrectangle_phase = matrix.colorearphase(matrixrectangle_phase);
                     matrixrectangle_temperature = matrix.colortemperature(matrixrectangle_temperature);
@@ -464,11 +474,11 @@ namespace WPF
         }
 
 
-        private void slider_speed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void slider_speed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) //Si cambiamos posición slider
         {
             try
             {
-                timer.Interval = TimeSpan.FromMilliseconds(slider_speed.Value);
+                timer.Interval = TimeSpan.FromMilliseconds(slider_speed.Value);//cambiamos velocidad simulación según posición slider
             }
             catch (Exception n)
             {
@@ -476,12 +486,10 @@ namespace WPF
             }
         }
 
-        private void grid_temperature_MouseDown(object sender, MouseButtonEventArgs e)
+        private void grid_temperature_MouseDown(object sender, MouseButtonEventArgs e)//Igual que en el click en grid_phase
         {
-            try
+            try //Nos da MessageBox con columna y fila seleccionada y el valor de temperatura de la cell
             {
-                //int X = Convert.ToInt32(e.GetPosition(grid_temperature).X.ToString());
-                //int Y = Convert.ToInt32(e.GetPosition(grid_temperature).Y.ToString());
                 int height = Convert.ToInt32(grid_phase.Height.ToString());
                 int width = Convert.ToInt32(grid_phase.Width.ToString());
                 string ColumnPosition = ColumnComputation(grid_phase.ColumnDefinitions, e.GetPosition(grid_phase).X).ToString();
@@ -501,14 +509,12 @@ namespace WPF
         }
 
 
-        private void comboBox_grid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void comboBox_grid_SelectionChanged(object sender, SelectionChangedEventArgs e)//Cambiamos combobox grid
         {
             try
             {
-                if (comboBox_grid.SelectedIndex == 1)
+                if (comboBox_grid.SelectedIndex == 1)//Nos muestra el grid de temperatura
                 {
-                    //grid_phase.Opacity = 0;
-                    //grid_temperature.Opacity = 1;
                     grid_temperature.Visibility = Visibility.Visible;
                     rectangle_gradienttemp.Visibility = Visibility.Visible;
                     grid_phase.Visibility = Visibility.Hidden;
@@ -517,10 +523,8 @@ namespace WPF
                     label_infoizq.Content = "-1";
                     label_infoder.Content = "0";
                 }
-                else
+                else//Nos muestra el grid de phase 
                 {
-                    //grid_phase.Opacity = 1;
-                    //grid_temperature.Opacity = 0;
                     grid_temperature.Visibility = Visibility.Hidden;
                     rectangle_gradienttemp.Visibility = Visibility.Hidden;
                     grid_phase.Visibility = Visibility.Visible;
@@ -539,7 +543,7 @@ namespace WPF
 
 
 
-        private void button_save_Click(object sender, RoutedEventArgs e)
+        private void button_save_Click(object sender, RoutedEventArgs e) //Guardamos todos los datos en un .txt
         {
             try
             {
@@ -551,9 +555,9 @@ namespace WPF
             }
         }
 
-        private void button_open_Click(object sender, RoutedEventArgs e)
+        private void button_open_Click(object sender, RoutedEventArgs e)//Abrimos un archivo .txt
         {
-            try
+            try//cargamos todos los elementos del archvio .txt en el proyecto para poder seguir por donde se guardó
             {
                 matrix = new Matriz(0, 0, conditionslist[1]);
                 Tuple<int, int, Conditions, String, Cell[,], List<Point>, List<Point>> tuple = matrix.abrir();
@@ -564,7 +568,8 @@ namespace WPF
                 conditionslist.Add(tuple.Item3);
                 comboBox_conditions.Items.Add(tuple.Item3.getname());
                 comboBox_conditions.SelectedValue = tuple.Item3.getname();
-
+                label_rows.Content = Convert.ToString(rows);
+                label_columns.Content = Convert.ToString(columns);
                 creargrid();
                 matrix = new Matriz(rows, columns, tuple.Item3);
 
@@ -573,18 +578,14 @@ namespace WPF
                 if (string.Compare("Solid", tuple.Item4) == 0)
                 {
                     comboBox_boundary.SelectedIndex = 1;
-
-                    //matrix.initialconditions(1);
                 }
                 else if (string.Compare("Liquid", tuple.Item4) == 0)
                 {
                     comboBox_boundary.SelectedIndex = 2;
-                    //matrix.initialconditions(2);
                 }
                 else if (string.Compare("Reflecting", tuple.Item4) == 0)
                 {
                     comboBox_boundary.SelectedIndex = 0;
-                    //matrix.initialconditions(0);
                 }
                 comboBox_boundary.IsEnabled = true;
                 matrix.setmatrix(tuple.Item5);
@@ -607,9 +608,9 @@ namespace WPF
 
         }
 
-        private void button_information_Click(object sender, RoutedEventArgs e)
+        private void button_information_Click(object sender, RoutedEventArgs e)//Button information click
         {
-            try
+            try//MessageBox con toda la información del proyecto
             {
                 MessageBox.Show("This Crystal Project consists in the growth of a simulated Crystal appling the Heat equation learn in Simulation lectures. \n\n The procedure is the following:\n\n 1st. Create the grid introducing the number of columns and rows. \n\n 2nd. Introduce the Boundary conditions you desire. \n\n 3rd. You can run the simulation selecting between observing the Temparature (default) or the Phase.  \n\n\n\n\n This project has been made by: \n\n Enric Gil, Adrian Gonzalez & Sergi Lucas");
             }

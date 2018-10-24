@@ -11,6 +11,8 @@ namespace ClassLibrary
 {
     public class Cell
     {
+
+        //Atributos
         double phase_actual;
         double temperature_actual;
 
@@ -27,6 +29,7 @@ namespace ClassLibrary
             this.conditions = conditions;
         }
 
+        //Get's and set's
         public double getTemperature()
         {
             return this.temperature_actual;
@@ -55,9 +58,10 @@ namespace ClassLibrary
             return this.color_temp;
         }
 
+        //devolvemos si la celda es sólida o no
         public int isSolid()
         {
-            if (phase_actual < 0.15)
+            if (phase_actual < 0.05) //si la fase actual es menor a 0.05 es sólida
             {
                 return 1;
             }
@@ -66,13 +70,15 @@ namespace ClassLibrary
                 return 0;
             }
         }
+
+        //Cuando iniciamos una matriz seleccionamos una celda como Solida, esta celda es la del medio
         public void setSolid()
         {
             this.temperature_actual = 0;
             this.phase_actual = 0;
         }
 
-
+        //Cada cell es capaz de calcular su estado futuro. Tenemos que introducirle los valores de phase i temperatura de las celdas de arriba, abajo, derecha y izquierda.
         public void compute_phase_and_temperature(double phase_neighb_right, double phase_neighb_left, double phase_neighb_up, double phase_neighb_down, double temperature_neighb_right, double temperature_neighb_left, double temperature_neighb_up, double temperature_neighb_down)
         {
             double phase_square_x = (phase_neighb_right + phase_neighb_left - 2 * phase_actual) / (conditions.getdelta_x() * conditions.getdelta_x());
@@ -90,6 +96,7 @@ namespace ClassLibrary
             this.temperature_future = temperature_actual + temperature_time * conditions.getdelta_time();
         }
 
+        //Pasamos el estado futuro a estado actual
         public void actualizar()
         {
             temperature_actual = temperature_future;
@@ -98,12 +105,15 @@ namespace ClassLibrary
             phase_future = 0;
 
         }
+
+        //Asignamos el atributo color_phase según la phase de la Cell
+        //Los colores para la phase son comprendidos en una escala cromática entre blanco y azul, azul para sólido y blanco para líquido
         public void colear_phase()
         {
             
             if (phase_actual > 0.95)
             {
-                color_phase = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                color_phase = new SolidColorBrush(Color.FromRgb(255, 255, 255)); //Blanco
             }
             else if (phase_actual < 0.95 && phase_actual > 0.85)
             {
@@ -143,16 +153,18 @@ namespace ClassLibrary
             }
             else
             {
-                color_phase = new SolidColorBrush(Color.FromRgb(0, 20, 255));
+                color_phase = new SolidColorBrush(Color.FromRgb(0, 20, 255)); //Azul
             }
 
         }
 
+        //Asignamos el atributo color_temp según la temperatura de la Cell
+        //Los colores para la temperatura son comprendidos en una escala cromática entre blanco y rojo. Rojo temp = 0, blanco temp = -1
         public void colorear_temp()
         {
             if (temperature_actual < -0.95)
             {
-                color_temp = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                color_temp = new SolidColorBrush(Color.FromRgb(255, 255, 255)); //Blanco
             }
             else if (temperature_actual > -0.95 && temperature_actual < -0.85)
             {
@@ -192,7 +204,7 @@ namespace ClassLibrary
             }
             else
             {
-                color_temp = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                color_temp = new SolidColorBrush(Color.FromRgb(255, 0, 0)); //Rojo
             }
         }
 

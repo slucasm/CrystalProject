@@ -20,7 +20,7 @@ namespace WPF
     public partial class Create_condition : Window
     {
         MainWindow originalForm;
-        public Create_condition(MainWindow incomingForm)
+        public Create_condition(MainWindow incomingForm)//Abrimos form con la información del MainWindow
         {
             try
             {
@@ -33,9 +33,9 @@ namespace WPF
             }
         }
 
-        private void button_newcondition_Click(object sender, RoutedEventArgs e)
+        private void button_newcondition_Click(object sender, RoutedEventArgs e)//Crear nueva condition click
         {
-            try
+            try//Creamos nueva condición y la añadimos en el combobox del MainWindow
             {
                 Conditions condition = new Conditions(Convert.ToDouble(textBox_AX.Text), Convert.ToDouble(textBox_AY.Text), Convert.ToDouble(textBox_epsylon.Text), Convert.ToDouble(textBox_M.Text), Convert.ToDouble(textBox_At.Text), Convert.ToDouble(textBox_delta.Text), Convert.ToDouble(textBox_B.Text), "New condition");
                 originalForm.comboBox_conditions.Items.Add("New condition");

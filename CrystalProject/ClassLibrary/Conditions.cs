@@ -8,22 +8,21 @@ namespace ClassLibrary
 {
     public class Conditions
     {
+        //Atributos
         double delta_x;
         double delta_y;
         double epsylon;
-        //double B;
         double M;
         double delta_time;
         double delta;
         double alpha;
-        string name;
+        string name;//el nombre lo utilizamos solo para cuando guardamos, pero el user no puede cambiarlo
 
         public Conditions(double delta_x, double delta_y, double epsylon, double M, double delta_time, double delta, double alpha,string name)
         {
             this.delta_x = delta_x;
             this.delta_y = delta_y;
             this.epsylon = epsylon;
-            //this.B = B;
             this.M = M;
             this.delta_time = delta_time;
             this.delta = delta;
@@ -32,7 +31,7 @@ namespace ClassLibrary
 
         }
 
-
+        //Get's y set's
         public double getalpha()
         {
             return this.alpha;
@@ -49,10 +48,7 @@ namespace ClassLibrary
         {
             return epsylon;
         }
-        //public double getB()
-        //{
-        //    return B;
-        //}
+
         public double getM()
         {
             return M;
