@@ -389,7 +389,7 @@ namespace ClassLibrary
             List<Point> list_phase = new List<Point>();
             List<Point> list_avgtemp = new List<Point>();
 
-            for (int i = 0; i < trozos_3.Length-4; i++)
+            for (int i = 0; i < trozos_3.Length-1; i++)
             {
                 Point n = new Point();
                 n.X = Convert.ToDouble(trozos_3[i]);
@@ -399,7 +399,7 @@ namespace ClassLibrary
                 Point m = new Point();
                 m.X = Convert.ToDouble(trozos_5[i]);
                 m.Y = Convert.ToDouble(trozos_6[i]);
-                list_phase.Add(m);
+                list_avgtemp.Add(m);
             }
 
             return Tuple.Create(numberrows, numbercolumns, conditions, boundary, matrixprueba, list_phase, list_avgtemp);
