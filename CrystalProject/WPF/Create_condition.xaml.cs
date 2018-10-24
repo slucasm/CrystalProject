@@ -28,7 +28,7 @@ namespace WPF
 
         private void button_newcondition_Click(object sender, RoutedEventArgs e)
         {
-            Conditions condition = new Conditions(Convert.ToDouble(textBox_AX.Text), Convert.ToDouble(textBox_AY.Text), Convert.ToDouble(textBox_epsylon.Text), Convert.ToDouble(textBox_M.Text), Convert.ToDouble(textBox_At.Text), Convert.ToDouble(textBox_delta.Text), Convert.ToDouble(textBox_B.Text));
+            Conditions condition = new Conditions(Convert.ToDouble(textBox_AX.Text), Convert.ToDouble(textBox_AY.Text), Convert.ToDouble(textBox_epsylon.Text), Convert.ToDouble(textBox_M.Text), Convert.ToDouble(textBox_At.Text), Convert.ToDouble(textBox_delta.Text), Convert.ToDouble(textBox_B.Text),"New condition");
             originalForm.comboBox_conditions.Items.Add("New condition");
             originalForm.conditionslist.Add(condition);
             MessageBox.Show("Your condition is indexed in combobox as: 'New condition'");

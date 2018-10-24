@@ -37,6 +37,14 @@ namespace ClassLibrary
             return this.phase_actual;
         }
 
+        public void setPhase(double phase)
+        {
+            this.phase_actual = phase;
+        }
+        public void setTemp(double temp)
+        {
+            this.temperature_actual = temp;
+        }
         public SolidColorBrush getColorphase()
         {
             return this.color_phase;

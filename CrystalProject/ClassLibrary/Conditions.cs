@@ -16,8 +16,9 @@ namespace ClassLibrary
         double delta_time;
         double delta;
         double alpha;
+        string name;
 
-        public Conditions(double delta_x, double delta_y, double epsylon, double M, double delta_time, double delta, double alpha)
+        public Conditions(double delta_x, double delta_y, double epsylon, double M, double delta_time, double delta, double alpha,string name)
         {
             this.delta_x = delta_x;
             this.delta_y = delta_y;
@@ -27,6 +28,7 @@ namespace ClassLibrary
             this.delta_time = delta_time;
             this.delta = delta;
             this.alpha = alpha;
+            this.name = name;
 
         }
 
@@ -62,6 +64,12 @@ namespace ClassLibrary
         public double getdelta()
         {
             return delta;
+        }
+
+       
+        public string getname()
+        {
+            return name;
         }
 
 

@@ -42,6 +42,7 @@ namespace WPF
         DispatcherTimer timer = new DispatcherTimer();
         int rows, columns;
         Boolean selectboundarycond = false;
+        Boolean creategrid = false;
 
         List<Point> listPoint_solids = new List<Point>();
         List<Point> listPoint_avgtemp = new List<Point>();
@@ -54,12 +55,13 @@ namespace WPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Conditions condition1 = new Conditions(0.005, 0.005, 0.005, 20, 5e-6, 0.5, 400);
-            Conditions condition2 = new Conditions(0.005, 0.005, 0.005, 30, 5e-6, 0.7, 300);
+            Conditions condition1 = new Conditions(0.005, 0.005, 0.005, 20, 5e-6, 0.5, 400,"Standard 1");
+            Conditions condition2 = new Conditions(0.005, 0.005, 0.005, 30, 5e-6, 0.7, 300,"Standard 2");
             conditionslist.Add(condition1);
             conditionslist.Add(condition2);
             comboBox_boundary.Items.Add("Reflecting");
-            comboBox_boundary.Items.Add("T constant");
+            comboBox_boundary.Items.Add("T constant solid");
+            comboBox_boundary.Items.Add("T constant liquid");
             comboBox_boundary.SelectedIndex = -1;
 
             comboBox_grid.Items.Add("Phase grid");
@@ -123,56 +125,81 @@ namespace WPF
             label_M.Content = "M: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getM());
         }
 
-        private void button_creategrid_Click(object sender, RoutedEventArgs e)
-        {
+        public void creargrid()
+        { 
             grid_phase.ColumnDefinitions.Clear();
             grid_temperature.ColumnDefinitions.Clear();
             grid_phase.RowDefinitions.Clear();
             grid_temperature.RowDefinitions.Clear();
-            rows = Convert.ToInt32(textBox_rows.Text);
-            columns = Convert.ToInt32(textBox_columns.Text);
-            grid_phase.ShowGridLines = false;
-            for (int j = 0; j < columns; j++)
+            listPoint_avgtemp.Clear();
+            listPoint_solids.Clear();
+            try
             {
-                grid_phase.ColumnDefinitions.Add(new ColumnDefinition());
-                grid_temperature.ColumnDefinitions.Add(new ColumnDefinition());
-            }
-            for (int i = 0; i < rows; i++)
-            {
-                grid_phase.RowDefinitions.Add(new RowDefinition());
-                grid_temperature.RowDefinitions.Add(new RowDefinition());
-            }
+                    if ((Convert.ToInt32(textBox_rows.Text) <= 0) || (Convert.ToInt32(textBox_columns.Text) <= 0))
+                        {
+                             MessageBox.Show("Please, insert a positive number");
+                        }
+                    else
+                    {
+                    rows = Convert.ToInt32(textBox_rows.Text);
+                    columns = Convert.ToInt32(textBox_columns.Text);
 
-            matrixrectangle_phase = new Rectangle[rows, columns];
-            matrixrectangle_temperature = new Rectangle[rows, columns];
+                    grid_phase.ShowGridLines = false;
+                    for (int j = 0; j < columns; j++)
+                    {
+                        grid_phase.ColumnDefinitions.Add(new ColumnDefinition());
+                        grid_temperature.ColumnDefinitions.Add(new ColumnDefinition());
+                    }
+                    for (int i = 0; i < rows; i++)
+                    {
+                        grid_phase.RowDefinitions.Add(new RowDefinition());
+                        grid_temperature.RowDefinitions.Add(new RowDefinition());
+                    }
 
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                {
+                    matrixrectangle_phase = new Rectangle[rows, columns];
+                    matrixrectangle_temperature = new Rectangle[rows, columns];
 
-                    matrixrectangle_phase[i, j] = new Rectangle();
-                    matrixrectangle_phase[i, j].Fill = new SolidColorBrush(System.Windows.Media.Colors.White);
-                    Grid.SetRow(matrixrectangle_phase[i, j], i);
-                    Grid.SetColumn(matrixrectangle_phase[i, j], j);
-                    grid_phase.Children.Add(matrixrectangle_phase[i, j]);
+                    for (int i = 0; i < rows; i++)
+                    {
+                        for (int j = 0; j < columns; j++)
+                        {
 
-                    matrixrectangle_temperature[i, j] = new Rectangle();
-                    matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(System.Windows.Media.Colors.White);
-                    Grid.SetRow(matrixrectangle_temperature[i, j], i);
-                    Grid.SetColumn(matrixrectangle_temperature[i, j], j);
-                    grid_temperature.Children.Add(matrixrectangle_temperature[i, j]);
+                            matrixrectangle_phase[i, j] = new Rectangle();
+                            matrixrectangle_phase[i, j].Fill = new SolidColorBrush(System.Windows.Media.Colors.White);
+                            Grid.SetRow(matrixrectangle_phase[i, j], i);
+                            Grid.SetColumn(matrixrectangle_phase[i, j], j);
+                            grid_phase.Children.Add(matrixrectangle_phase[i, j]);
+
+                            matrixrectangle_temperature[i, j] = new Rectangle();
+                            matrixrectangle_temperature[i, j].Fill = new SolidColorBrush(System.Windows.Media.Colors.White);
+                            Grid.SetRow(matrixrectangle_temperature[i, j], i);
+                            Grid.SetColumn(matrixrectangle_temperature[i, j], j);
+                            grid_temperature.Children.Add(matrixrectangle_temperature[i, j]);
+                        }
+                    }
+
+                    matrix = new Matriz(rows, columns, conditionslist[comboBox_conditions.SelectedIndex]);
+                    matrix.createMatrix();
+
+                    matrix.initialconditions(0); //Por defecto
+
+                    tabla = matrix.createTable();
+
+                    creategrid = true;
+                    //dataGrid_cells.ItemsSource = tabla.DefaultView;
                 }
             }
+            catch (FormatException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
 
-            matrix = new Matriz(rows, columns, conditionslist[comboBox_conditions.SelectedIndex]);
-            matrix.createMatrix();
 
-            matrix.initialconditions(0); //Por defecto
-
-            tabla = matrix.createTable();
-
-            //dataGrid_cells.ItemsSource = tabla.DefaultView;
+        private void button_creategrid_Click(object sender, RoutedEventArgs e)
+        {
+            creargrid();
+            comboBox_boundary.IsEnabled=true;
         }
 
         private void button_newcond_Click(object sender, RoutedEventArgs e)
@@ -183,7 +210,11 @@ namespace WPF
 
         private void button_ciclo_Click(object sender, RoutedEventArgs e)
         {
-            if (selectboundarycond == true)
+            if (creategrid == false)
+            {
+                MessageBox.Show("Please, create the GRID before the Simulation");
+            }
+            else if (selectboundarycond == true && creategrid == true)
             {
                 matrix.neighbours();
                 matrix.actualizar();
@@ -201,37 +232,72 @@ namespace WPF
                 plot_temp.AddLineGraph(d2, Colors.Red, 1,"Average temperature");
                 plot_temp.LegendVisible = false;
             }
-            else
+            else if (selectboundarycond == false)
             {
-                MessageBox.Show("Before the simulation you have to select boundary conditions");
+                MessageBox.Show("Please, select Boundary Conditions before the Simulation");
             }
         }
 
         private void button_start_Click(object sender, RoutedEventArgs e)
         {
-            if (selectboundarycond == true)
+            if (creategrid == false)
+            {
+                MessageBox.Show("Please, create the GRID before the Simulation");
+            }
+            else if (selectboundarycond == true && creategrid == true)
             {
                 timer.Start();
             }
-            else
+            else if (selectboundarycond == false)
             {
-                MessageBox.Show("Before the simulation you have to select boundary conditions");
+                MessageBox.Show("Please, select Boundary Conditions before the Simulation");
             }
+        
         }
-
-        private void button_stop_Click(object sender, RoutedEventArgs e)
+               
+        private void button_stop_Click(object sender, RoutedEventArgs e) //Stop Button
         {
-            if (selectboundarycond == true)
+            if (creategrid == false)
+            {
+                MessageBox.Show("Please, create the GRID before the Simulation");
+            }
+            else if (selectboundarycond == true && creategrid == true)
             {
                 timer.Stop();
             }
-            else
+            else if (selectboundarycond == false)
             {
-                MessageBox.Show("Before the simulation you have to select boundary conditions");
+                MessageBox.Show("Please, select Boundary Conditions before the Simulation");
             }
         }
 
+        private void button_restart_Click(object sender, RoutedEventArgs e)
+        {
+            if (creategrid == false)
+            {
+                MessageBox.Show("Please, create the GRID before the Simulation");
+            }
+            else if (selectboundarycond == true && creategrid == true)
+            {
+                timer.Stop();
+                creargrid();
+                plot_phase.Children.RemoveAll((typeof(LineGraph)));
+                plot_temp.Children.RemoveAll((typeof(LineGraph)));
+                listPoint_avgtemp.Clear();
+                listPoint_solids.Clear();
 
+                comboBox_boundary.IsEnabled = false;
+                comboBox_boundary.SelectedIndex = -1;
+                creategrid = false;
+                selectboundarycond = false;
+            }
+            else if (selectboundarycond == false)
+            {
+                MessageBox.Show("Please, select Boundary Conditions before the Simulation");
+            }
+        }
+
+        
 
         private void grid_phase_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -277,15 +343,23 @@ namespace WPF
 
         private void comboBox_boundary_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (comboBox_boundary.SelectedIndex != -1)
+            if ((comboBox_boundary.SelectedIndex != -1) && (matrix != null))
             {
                 if (comboBox_boundary.SelectedIndex == 0)
                 {
                     matrix.initialconditions(0);
                 }
-                else
+                else if (comboBox_boundary.SelectedIndex == 1)
                 {
                     matrix.initialconditions(1);
+                }
+                else if (comboBox_boundary.SelectedIndex == 2)
+                {
+                    matrix.initialconditions(2);
+                }
+                else
+                {
+                    matrix.initialconditions(-1);
                 }
                 matrix.initialSolid(Convert.ToInt32(Math.Ceiling(Convert.ToDouble(rows / 2))), Convert.ToInt32(Math.Ceiling(Convert.ToDouble(columns / 2))));
                 matrixrectangle_phase = matrix.colorearphase(matrixrectangle_phase);
@@ -298,6 +372,11 @@ namespace WPF
                 RawDataSource d1 = new RawDataSource(listPoint_solids);
                 RawDataSource d2 = new RawDataSource(listPoint_avgtemp);
             }
+            else 
+            {
+                //MessageBox.Show("Please create the grid first!");
+            }
+            
         }
 
 
@@ -343,6 +422,73 @@ namespace WPF
             }
 
         }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("This Crystal Project consists in the growth of a simulated Crystal appling the Heat equation learn in Simulation lectures. \n\n The procedure is the following:\n\n 1st. Create the grid introducing the number of columns and rows. \n\n 2nd. Introduce the Boundary conditions you desire. \n\n 3rd. You can run the simulation selecting between observing the Temparature (default) or the Phase.  \n\n\n\n\n This project has been made by: \n\n Enric Gil, Adrian Gonzalez & Sergi Lucas");
+
+        }
+
+        private void button_save_Click(object sender, RoutedEventArgs e)
+        {
+            matrix.guardar(listPoint_solids, listPoint_avgtemp);
+        }
+
+        private void button_open_Click(object sender, RoutedEventArgs e)
+        {
+            
+            matrix = new Matriz(0, 0, conditionslist[1]);
+            Tuple<int,int,Conditions,String,Cell[,],List<Point>,List<Point>> tuple = matrix.abrir();
+            rows = tuple.Item1;
+            textBox_rows.Text = Convert.ToString(rows);
+            columns = tuple.Item2;
+            textBox_columns.Text = Convert.ToString(columns);
+            conditionslist.Add(tuple.Item3);
+            comboBox_conditions.Items.Add(tuple.Item3.getname());
+            comboBox_conditions.SelectedValue = tuple.Item3.getname();
+            
+            creargrid();
+            matrix = new Matriz(rows, columns, tuple.Item3);
+
+            matrix.createMatrix();
+
+            if (string.Compare( "Solid",tuple.Item4) == 0)
+            {
+                comboBox_boundary.SelectedIndex = 1;
+                
+                //matrix.initialconditions(1);
+            }
+            else if (string.Compare( "Liquid",tuple.Item4) == 0)
+            {
+                comboBox_boundary.SelectedIndex = 2;
+                //matrix.initialconditions(2);
+            }
+            else if (string.Compare("Reflecting", tuple.Item4) == 0)
+            {
+                comboBox_boundary.SelectedIndex = 0;
+                //matrix.initialconditions(0);
+            }
+            comboBox_boundary.IsEnabled = true;
+            matrix.setmatrix(tuple.Item5);
+            listPoint_solids = tuple.Item6;
+            listPoint_avgtemp = tuple.Item7;
+
+            RawDataSource d1 = new RawDataSource(listPoint_solids);
+            RawDataSource d2 = new RawDataSource(listPoint_avgtemp);
+
+            plot_phase.AddLineGraph(d1, Colors.Blue, 1, "Number solids");
+            plot_phase.LegendVisible = false;
+            plot_temp.AddLineGraph(d2, Colors.Red, 1, "Average temperature");
+            plot_temp.LegendVisible = false;
+
+
+        }
+
+        
+
+
+
+
 
 
 
