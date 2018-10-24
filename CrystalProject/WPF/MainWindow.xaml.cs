@@ -612,7 +612,7 @@ namespace WPF
         {
             try//MessageBox con toda la información del proyecto
             {
-                MessageBox.Show("This Crystal Project consists in the growth of a simulated Crystal appling the Heat equation learn in Simulation lectures. \n\n The procedure is the following:\n\n 1st. Create the grid introducing the number of columns and rows. \n\n 2nd. Introduce the Boundary conditions you desire. \n\n 3rd. You can run the simulation selecting between observing the Temparature (default) or the Phase.  \n\n\n\n\n This project has been made by: \n\n Enric Gil, Adrian Gonzalez & Sergi Lucas");
+                MessageBox.Show("This Crystal Project consists in the growth of a simulated Crystal appling the Heat equation learn in Simulation lectures. \n\n The procedure is the following:\n\n 1st. Create the grid introducing the number of columns and rows. \n\n 2nd. Introduce the Boundary conditions you desire. \n\n 3rd. You can run the simulation selecting between observing the Temparature (default) or the Phase.  \n\n\n\n\n This project has been made by: \n\n Enric Gil, Adrian Garcia & Sergi Lucas");
             }
             catch (Exception s)
             {
