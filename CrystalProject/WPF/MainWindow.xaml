@@ -4,7 +4,7 @@
 
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
         Title="MainWindow" Height="693" Width="1153" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Icon="/WPF;component/Images/71Imq3vXaGL._SL1440_.jpg">
-    <Grid Width="1112" Height="650">
+    <Grid Width="1112" Height="650" MouseLeave="Grid_MouseLeave">
         <GroupBox Header="CONDITIONS" Height="142" HorizontalAlignment="Left" Margin="199,7,0,0" Name="groupBox_conditions" VerticalAlignment="Top" Width="444" Foreground="White">
             <Grid Height="117" Width="424" Background="#FFF8F7F5">
                 <Grid.ColumnDefinitions>
@@ -12,7 +12,7 @@
                     <ColumnDefinition Width="319*" />
                 </Grid.ColumnDefinitions>
                 <ComboBox Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="comboBox_conditions" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" SelectionChanged="comboBox_conditions_SelectionChanged" Loaded="comboBox_conditions_Loaded" />
-                <Button Content="Create new conditions" Height="23" HorizontalAlignment="Left" Margin="103,6,0,0" Name="button_newcond" VerticalAlignment="Top" Width="125" Grid.Column="1" Click="button_newcond_Click" />
+                <Button Content="Edit parameters" Height="23" HorizontalAlignment="Left" Margin="103,6,0,0" Name="button_newcond" VerticalAlignment="Top" Width="125" Grid.Column="1" Click="button_newcond_Click" />
                 <Label Content="Label" Grid.ColumnSpan="2" Height="28" HorizontalAlignment="Left" Margin="15,35,0,0" Name="label_AX" VerticalAlignment="Top" />
                 <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="35,35,0,0" Name="label_AY" VerticalAlignment="Top" Grid.Column="1" />
                 <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="103,35,0,0" Name="label_epsylon" VerticalAlignment="Top" Grid.Column="1" />
@@ -41,7 +41,7 @@
             </Button.Background>
         </Button>
         <Slider Height="23" HorizontalAlignment="Left" Margin="579,417,0,0" Name="slider_speed" VerticalAlignment="Top" Width="140" Maximum="2" Minimum="0.1" Interval="1" ValueChanged="slider_speed_ValueChanged" />
-        <Grid Height="321" HorizontalAlignment="Left" Margin="58,247,0,0" Name="grid_phase" VerticalAlignment="Top" Width="470" MouseDown="grid_phase_MouseDown" Background="#FFEAF2DC"></Grid>
+        <Grid Height="321" HorizontalAlignment="Left" Margin="58,247,0,0" Name="grid_phase" VerticalAlignment="Top" Width="470" MouseDown="grid_phase_MouseDown" Background="#FFEAF2DC" MouseEnter="grid_phase_MouseEnter" MouseMove="grid_phase_MouseMove"></Grid>
         <Grid Height="321" HorizontalAlignment="Left" Margin="58,247,0,0" Name="grid_temperature" VerticalAlignment="Top" Width="470" MouseDown="grid_temperature_MouseDown" Visibility="Visible" Background="#FFE1EFCA" />
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="58,218,0,0" Name="comboBox_grid" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="comboBox_grid_SelectionChanged" />
         <Border BorderBrush="Black" BorderThickness="1" Margin="58,247,584,82" />
@@ -113,6 +113,10 @@
         <Label Content="Simulation speed" Height="28" HorizontalAlignment="Left" Margin="595,392,0,0" Name="label_slider0" VerticalAlignment="Top" FontWeight="Bold" />
         <Label Content="1 cycle/ms" Height="28" HorizontalAlignment="Left" Margin="548,428,0,0" Name="label_slider1" VerticalAlignment="Top" FontWeight="Bold" />
         <Label Content="1 cycle/s" Height="28" HorizontalAlignment="Left" Margin="679,428,0,0" Name="label_slider2" VerticalAlignment="Top" FontWeight="Bold" />
+        <Label Content="Row:" Height="28" HorizontalAlignment="Left" Margin="73,574,0,0" Name="label_gridrow" VerticalAlignment="Top" FontWeight="Bold" />
+        <Label Content="Column:" Height="28" HorizontalAlignment="Left" Margin="158,574,0,0" Name="label_gridcolumn" VerticalAlignment="Top" FontWeight="Bold" />
+        <Label Content="Cell phase:" Height="28" HorizontalAlignment="Left" Margin="267,574,0,0" Name="label_phasecell" VerticalAlignment="Top" FontWeight="Bold" />
+        <Label Content="Temperature cell:" Height="28" HorizontalAlignment="Right" Margin="0,574,598,0" Name="label_tempcell" VerticalAlignment="Top" FontWeight="Bold" />
     </Grid>
     <Window.Background>
         <ImageBrush ImageSource="/WPF;component/Images/ice-crystals-1.jpg" />

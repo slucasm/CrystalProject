@@ -32,10 +32,10 @@ namespace WPF
         public MainWindow()
         {
             InitializeComponent();
-           
+
         }
 
-        public List<Conditions> conditionslist = new List<Conditions>(); 
+        public List<Conditions> conditionslist = new List<Conditions>();
         Matriz matrix;
         Rectangle[,] matrixrectangle_phase, matrixrectangle_temperature; //matriz de Rectangle, lo utilizamos para los colores
         DispatcherTimer timer = new DispatcherTimer(); //timer
@@ -49,6 +49,8 @@ namespace WPF
 
         ChartPlotter plot_phase = new ChartPlotter();//Creamos un gráfico para número de sólidos/iteración
         ChartPlotter plot_temp = new ChartPlotter();//Creamos un gráfico para temperatura media(iteración
+
+
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -66,7 +68,7 @@ namespace WPF
                 comboBox_boundary.Items.Add("T constant solid");
                 comboBox_boundary.Items.Add("T constant liquid");
                 comboBox_boundary.SelectedIndex = -1;
-                
+
                 //Combobox para variar entre las dos gráficas
                 comboBox_grid.Items.Add("Phase grid");
                 comboBox_grid.Items.Add("Temperature grid");
@@ -131,7 +133,7 @@ namespace WPF
                 label_AX.Content = "∆X: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getdelta_x());
                 label_AY.Content = "∆Y: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getdelta_y());
                 label_epsylon.Content = "ε: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getepsylon());
-                label_B.Content = "B: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getepsylon());
+                label_B.Content = "B: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getalpha());
                 label_delta.Content = "∆: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getdelta());
                 label_At.Content = "∆t: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getdelta_time());
                 label_M.Content = "M: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getM());
@@ -150,7 +152,7 @@ namespace WPF
                 label_AX.Content = "∆X: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getdelta_x());
                 label_AY.Content = "∆Y: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getdelta_y());
                 label_epsylon.Content = "ε: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getepsylon());
-                label_B.Content = "B: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getepsylon());
+                label_B.Content = "B: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getalpha());
                 label_delta.Content = "∆: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getdelta());
                 label_At.Content = "∆t: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getdelta_time());
                 label_M.Content = "M: " + Convert.ToString(conditionslist[comboBox_conditions.SelectedIndex].getM());
@@ -162,7 +164,7 @@ namespace WPF
         }
 
         public void creargrid() //inicializamos grid
-        { 
+        {
             try
             {
                 //borramos todo lo que havia cargado, para evitar errores
@@ -174,17 +176,17 @@ namespace WPF
                 listPoint_solids.Clear();
 
                 //si rows y columns es positivo seguimos, sinó, no podemos avanzar
-                    if ((Convert.ToInt32(textBox_rows.Text) <= 0) || (Convert.ToInt32(textBox_columns.Text) <= 0))
-                        {
-                             MessageBox.Show("Please, insert a positive number");
-                        }
-                    else
-                    {
+                if ((Convert.ToInt32(textBox_rows.Text) <= 0) || (Convert.ToInt32(textBox_columns.Text) <= 0))
+                {
+                    MessageBox.Show("Please, insert a positive number");
+                }
+                else
+                {
                     rows = Convert.ToInt32(textBox_rows.Text);
                     columns = Convert.ToInt32(textBox_columns.Text);
 
                     grid_phase.ShowGridLines = false;
-                        //creamos filas y columnas del grid
+                    //creamos filas y columnas del grid
                     for (int j = 0; j < columns; j++)
                     {
                         grid_phase.ColumnDefinitions.Add(new ColumnDefinition());
@@ -195,7 +197,7 @@ namespace WPF
                         grid_phase.RowDefinitions.Add(new RowDefinition());
                         grid_temperature.RowDefinitions.Add(new RowDefinition());
                     }
-                        //Creamos 2 matriz de Rectangle del mismo tamaño que matrix
+                    //Creamos 2 matriz de Rectangle del mismo tamaño que matrix
                     matrixrectangle_phase = new Rectangle[rows, columns];
                     matrixrectangle_temperature = new Rectangle[rows, columns];
 
@@ -236,6 +238,7 @@ namespace WPF
             try
             {
                 creargrid();
+                timer.Stop();
                 comboBox_boundary.IsEnabled = true;//Mostramos combobox de las condiciones de frontera
             }
             catch (Exception f)
@@ -316,9 +319,9 @@ namespace WPF
             {
                 MessageBox.Show(i.Message);
             }
-        
+
         }
-               
+
         private void button_stop_Click(object sender, RoutedEventArgs e) //Stop Button
         {
             try
@@ -377,12 +380,12 @@ namespace WPF
             }
         }
 
-        
+
 
         private void grid_phase_MouseDown(object sender, MouseButtonEventArgs e)//Click en grid_phase
         {
             try //Nos da un MessageBox con el número de fila y columna seleccionado, y el valor de phase de la celda
-                //Llamamos a dos funciones que hemos creado para saber número de fila y columna según la posición X,Y que hemos clickado en el grid
+            //Llamamos a dos funciones que hemos creado para saber número de fila y columna según la posición X,Y que hemos clickado en el grid
             {
                 int height = Convert.ToInt32(grid_phase.Height.ToString());
                 int width = Convert.ToInt32(grid_phase.Width.ToString());
@@ -390,10 +393,10 @@ namespace WPF
                 string RowPosition = RowComputation(grid_phase.RowDefinitions, e.GetPosition(grid_phase).Y).ToString();
 
                 Tuple<double, double> tuple = matrix.getphaseandtemperature(Convert.ToInt32(RowPosition), Convert.ToInt32(ColumnPosition));
-                string phase = Convert.ToString(tuple.Item1);
-                string temp = Convert.ToString(tuple.Item2);
+                string cellPhase = Convert.ToString(tuple.Item1);
+                string cellTemp = Convert.ToString(tuple.Item2);
 
-                MessageBox.Show(String.Format("Column: {0} \n Row: {1}\n Phase: {2}", ColumnPosition, RowPosition, phase), "Results");
+                MessageBox.Show(String.Format("Column: {0} \n Row: {1}\n Phase: {2}", ColumnPosition, RowPosition, cellPhase), "Results");
             }
             catch (Exception l)
             {
@@ -470,7 +473,7 @@ namespace WPF
             {
                 MessageBox.Show(m.Message);
             }
-            
+
         }
 
 
@@ -618,6 +621,62 @@ namespace WPF
             {
                 MessageBox.Show(s.Message);
             }
+        }
+
+        private void grid_phase_MouseEnter(object sender, MouseEventArgs e)//Cuando entra el mouse en el grid que de el valor de entrada en los labels
+        {
+            if (creategrid == true)
+            {
+                int height = Convert.ToInt32(grid_phase.Height.ToString());
+                int width = Convert.ToInt32(grid_phase.Width.ToString());
+                string ColumnPosition = ColumnComputation(grid_phase.ColumnDefinitions, e.GetPosition(grid_phase).X).ToString();
+                string RowPosition = RowComputation(grid_phase.RowDefinitions, e.GetPosition(grid_phase).Y).ToString();
+
+                Tuple<double, double> tuple = matrix.getphaseandtemperature(Convert.ToInt32(RowPosition), Convert.ToInt32(ColumnPosition));
+                string cellPhase = Convert.ToString(tuple.Item1);
+                string cellTemp = Convert.ToString(tuple.Item2);
+                label_phasecell.Content = String.Format("Cell phase: {0}", cellPhase);
+                label_tempcell.Content = String.Format("Cell temperature: {0}", cellTemp);
+                label_gridcolumn.Content = String.Format("Column: {0}", ColumnPosition);
+                label_gridrow.Content = String.Format("Row: {0}", RowPosition);
+            }
+            else
+            { }
+        }
+
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)//Cuando sale el mouse del grid que reestablezca los valores de los labels
+        {
+            if (creategrid == true)
+            {
+                label_phasecell.Content = String.Format("Cell phase:");
+                label_tempcell.Content = String.Format("Cell temperature:");
+                label_gridcolumn.Content = String.Format("Column:");
+                label_gridrow.Content = String.Format("Row:");
+            }
+            else
+            {
+            }
+        }
+
+        private void grid_phase_MouseMove(object sender, MouseEventArgs e)//Cuando movemos el mouse por encima del grid que vaya actualizando los valores de las labels
+        {
+            if (creategrid == true)
+            {
+                int height = Convert.ToInt32(grid_phase.Height.ToString());
+                int width = Convert.ToInt32(grid_phase.Width.ToString());
+                string ColumnPosition = ColumnComputation(grid_phase.ColumnDefinitions, e.GetPosition(grid_phase).X).ToString();
+                string RowPosition = RowComputation(grid_phase.RowDefinitions, e.GetPosition(grid_phase).Y).ToString();
+
+                Tuple<double, double> tuple = matrix.getphaseandtemperature(Convert.ToInt32(RowPosition), Convert.ToInt32(ColumnPosition));
+                string cellPhase = Convert.ToString(tuple.Item1);
+                string cellTemp = Convert.ToString(tuple.Item2);
+                label_phasecell.Content = String.Format("Cell phase: {0}", Math.Round(Convert.ToDecimal(cellPhase),4));
+                label_tempcell.Content = String.Format("Cell temperature: {0}", Math.Round(Convert.ToDecimal(cellTemp),4));
+                label_gridcolumn.Content = String.Format("Column: {0}", ColumnPosition);
+                label_gridrow.Content = String.Format("Row: {0}", RowPosition);
+            }
+            else
+            { }
         }
     }
 }

@@ -33,6 +33,13 @@ namespace WPF
             }
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            comboBox_standard.Items.Add(originalForm.conditionslist[0].getname());
+            comboBox_standard.Items.Add(originalForm.conditionslist[1].getname());
+            comboBox_standard.SelectedIndex = -1;
+        }
+
         private void button_newcondition_Click(object sender, RoutedEventArgs e)//Crear nueva condition click
         {
             try//Creamos nueva condición y la añadimos en el combobox del MainWindow
@@ -48,5 +55,34 @@ namespace WPF
                 MessageBox.Show(b.Message);
             }
         }
+
+        private void comboBox_standard_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (comboBox_standard.SelectedIndex == 0)
+            {
+                textBox_AX.Text = Convert.ToString(originalForm.conditionslist[0].getdelta_x());
+                textBox_AY.Text = Convert.ToString(originalForm.conditionslist[0].getdelta_y());
+                textBox_B.Text = Convert.ToString(originalForm.conditionslist[0].getalpha());
+                textBox_epsylon.Text = Convert.ToString(originalForm.conditionslist[0].getepsylon());
+                textBox_M.Text = Convert.ToString(originalForm.conditionslist[0].getM());
+                textBox_delta.Text = Convert.ToString(originalForm.conditionslist[0].getdelta());
+                textBox_At.Text = Convert.ToString(originalForm.conditionslist[0].getdelta_time());
+            }
+            else
+            {
+                textBox_AX.Text = Convert.ToString(originalForm.conditionslist[1].getdelta_x());
+                textBox_AY.Text = Convert.ToString(originalForm.conditionslist[1].getdelta_y());
+                textBox_B.Text = Convert.ToString(originalForm.conditionslist[1].getalpha());
+                textBox_epsylon.Text = Convert.ToString(originalForm.conditionslist[1].getepsylon());
+                textBox_M.Text = Convert.ToString(originalForm.conditionslist[1].getM());
+                textBox_delta.Text = Convert.ToString(originalForm.conditionslist[1].getdelta());
+                textBox_At.Text = Convert.ToString(originalForm.conditionslist[1].getdelta_time());
+            }
+        }
+
+
+
+
+        
     }
 }

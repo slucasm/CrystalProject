@@ -34,21 +34,6 @@ namespace ClassLibrary
             this.conditions = conditions;
         }
 
-        //public DataTable createTable()
-        //{
-        //    DataTable table = new DataTable();
-        //    for (int contadorcolumns = 0; contadorcolumns < numbercolumns; contadorcolumns++)
-        //    {
-        //        //DataColumn dc = new DataColumn("id", typeof(int));
-        //        table.Columns.Add();
-        //    }
-        //    for (int contadorrows = 0; contadorrows < numberrows; contadorrows++)
-        //    {
-        //        table.Rows.Add();
-        //    }
-
-        //    return table;
-        //}
 
         //Inicializamos la matriz
         public void createMatrix()
